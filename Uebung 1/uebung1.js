@@ -58,7 +58,9 @@ function crossTrackDistance(coord1, coord2, coord3) // calculates the distance b
     var brgFstToSnd = getBearing(coord1, coord2)
 
     var sigma = dstFstToThrd / R
-    return Math.asin(Math.sin(sigma)*Math.sin(brgFstToThrd-brgFstToSnd)) * R
+    var dist = Math.asin(Math.sin(sigma)*Math.sin(brgFstToThrd-brgFstToSnd)) * R
+    if(dist<0) return dist * (-1)
+    else return dist
 }
 
 function pointOnLine(line, pnt)
@@ -90,8 +92,11 @@ function intersect(segment1, segment2)
         return  [phi1, phi2]
    }
 
-    var thetaA = Math.acos((Math.sin(phi2)-Math.sin(phi1)*Math.cos(gamma12))/(Math.sin(gamma12)*Math.cos(phi1)))
-    var thetaB = Math.acos((Math.sin(phi1)-Math.sin(phi2)*Math.cos(gamma12))/(Math.sin(gamma12)*Math.cos(phi2)))
+    var cosThetaA = (Math.sin(phi2)-Math.sin(phi1)*Math.cos(gamma12))/(Math.sin(gamma12)*Math.cos(phi1))
+    var cosThetaB = (Math.sin(phi1)-Math.sin(phi2)*Math.cos(gamma12))/(Math.sin(gamma12)*Math.cos(phi2))
+
+    var thetaA = Math.acos(Math.min(Math.max(cosThetaA, -1), 1))
+    var thetaB = Math.acos(Math.min(Math.max(cosThetaB, -1), 1))
 
     var theta12, theta21
 
@@ -118,16 +123,20 @@ function intersect(segment1, segment2)
     var alpha3 = Math.acos(-Math.cos(alpha1)*Math.cos(alpha2)+Math.sin(alpha1)*Math.sin(alpha2)*Math.cos(gamma12))
     var gamma13 = Math.atan2(Math.sin(gamma12)*Math.sin(alpha1)*Math.sin(alpha2), 
         Math.cos(alpha2)+Math.cos(alpha1)*Math.cos(alpha3))
-    //var phi3 = Math.asin(Math.sin(phi1)*Math.cos(gamma13)+Math.cos(phi1)*Math.sin(gamma13)*Math.cos(theta13))
     var phi3 = Math.asin(Math.min(Math.max(Math.sin(phi1)*Math.cos(gamma13) + Math.cos(phi1) * Math.sin(gamma13) * Math.cos(theta13), -1), 1))
     var deltaLambda13 = Math.atan2(Math.sin(theta13)*Math.sin(gamma13)*Math.cos(phi1), 
         Math.cos(gamma13)-Math.sin(phi1)*Math.sin(phi3))
-    var lambda3 = lambda1 - deltaLambda13
     
-    var intersectionPoint = [rad2deg(phi3), rad2deg(lambda3)]
+    var lambda3 = lambda1 + deltaLambda13
+    
+    var intersectionPoint = [rad2deg(phi3), rad2deg(lambda3)%180]
+    if(intersectionPoint[0] < 0) intersectionPoint[0] = intersectionPoint[0] * (-1)
+    if(intersectionPoint[1] < 0) intersectionPoint[1] = intersectionPoint[1] * (-1)
+
     return intersectionPoint
 }
 
+// checks out whether a point is located inside of a polygon
 function isPointInPoly(plgn, pnt)
 {
     var x = pnt[0], y = pnt[1]
@@ -148,10 +157,16 @@ let pointsOutsideOfPoly = new Array()
 let pointsOutsideOfPolyLength = 0
 let counter 
 
+// recognizes all points from route which are inside of the polygon
 for(var i=0; i<route.length; i++){
     if(isPointInPoly(polygon, route[i]) == false){
         var subsection = new Array()
         counter = 0
+
+        if(i!=0){
+            counter = getBorderOfSubsection("left", polygon, route, counter, subsection)
+        }
+
         subsection[counter] = route[i]
         i++
         counter++
@@ -167,17 +182,53 @@ for(var i=0; i<route.length; i++){
             console.log("counter: "+ counter)
             console.log("repeat while")
         }
-        console.log("i: "+i)
-        console.log("counter: "+ counter)
-        console.log("finished while")
+
+        counter = getBorderOfSubsection("right", polygon, route, counter, subsection)
         
-        console.log("i: "+i)
-        console.log("counter before next round: "+ counter)
-        console.log("finished if")
+        //
+
         if(i>=route.length) break
         pointsOutsideOfPoly[pointsOutsideOfPolyLength] = subsection
         pointsOutsideOfPolyLength++
     }
+}
+
+// site = left or right
+function getBorderOfSubsection(site, polygon, route, counter, subsection){
+    var crossPointDist = new Array() // will contain all distances from the last point outside the polygon to all segments of the polygon
+
+    if(site == "right"){
+        for(var j=0; j<polygon.length-1; j++){
+        crossPointDist[j] = intersect([route[i-1],route[i]],[polygon[j],polygon[j+1]])
+        }
+        for(j=0; j<crossPointDist.length; j++){
+            if(crossPointDist[j]!= null) {
+                crossPointDist[j] = [crossPointDist[j],calculateDistance(crossPointDist[j],route[i-1])]
+            }
+            else crossPointDist[j] = [crossPointDist[j],999999999]
+        }
+        crossPointDist.sort(function([a,b],[c,d]){return b-d})
+        subsection[counter] = crossPointDist[0][0]
+        counter++
+        return counter
+    }
+    // LEFT doesn't work
+    else if (site == "left"){
+        for(var j=0; j<polygon.length-1; j++){
+            crossPointDist[j] = intersect([route[i],route[i+1]],[polygon[j],polygon[j+1]])
+            }
+            for(j=0; j<crossPointDist.length; j++){
+                if(crossPointDist[j]!= null) {
+                    crossPointDist[j] = [crossPointDist[j],calculateDistance(crossPointDist[j],route[i])]
+                }
+                else crossPointDist[j] = [crossPointDist[j],999999999]
+            }
+            crossPointDist.sort(function([a,b],[c,d]){return b-d})
+            subsection[counter] = crossPointDist[0][0]
+            counter++
+            return counter
+    }
+    
 }
 
 //builds up table from downside (adds rows on the top)
