@@ -1,5 +1,7 @@
 "use strict"
 
+const R = 6371 
+
 function deg2rad(deg) 
 {
     return deg * (Math.PI/180)
@@ -10,7 +12,10 @@ function rad2deg(rad)
     return rad * (180/Math.PI)
 }
 
-const R = 6371 
+function convertToInitialBearing(theta)
+{
+    return (theta+360) % 360
+}
 
 function calculateDistance(coord1, coord2) // works
 {
@@ -19,22 +24,14 @@ function calculateDistance(coord1, coord2) // works
     var lat2 = deg2rad(coord2[0])
     var lon2 = deg2rad(coord2[1])
 
-    
     var dLat = lat2-lat1
     var dLon = lon2-lon1
-    var a = 
-      Math.sin(dLon/2) * Math.sin(dLon/2) +
-      Math.cos(lon1) * Math.cos(lon2) * 
-      Math.sin(dLat/2) * Math.sin(dLat/2)
-      ; 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var a = Math.sin(dLon/2) * Math.sin(dLon/2) +
+            Math.cos(lon1) * Math.cos(lon2) * 
+            Math.sin(dLat/2) * Math.sin(dLat/2)
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
     var d = R * c; // Distance in km
     return d;
-}
-
-function convertToInitialBearing(theta)
-{
-    return (theta+360) % 360
 }
 
 function getBearing(coord1, coord2)
@@ -87,10 +84,10 @@ function intersect(segment1, segment2)
 
     var gamma12 = 2 * Math.asin(Math.sqrt(Math.sin(dphi/2) * Math.sin(dphi/2)
         + Math.cos(phi1) * Math.cos(phi2) * Math.sin(dlambda/2) * Math.sin(dlambda/2)))
-   if (Math.abs(gamma12) < Number.EPSILON) {
+    if (Math.abs(gamma12) < Number.EPSILON) {
         console.log("Coincident points")
         return  [phi1, phi2]
-   }
+    }
 
     var cosThetaA = (Math.sin(phi2)-Math.sin(phi1)*Math.cos(gamma12))/(Math.sin(gamma12)*Math.cos(phi1))
     var cosThetaB = (Math.sin(phi1)-Math.sin(phi2)*Math.cos(gamma12))/(Math.sin(gamma12)*Math.cos(phi2))
