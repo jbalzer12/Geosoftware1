@@ -164,28 +164,20 @@ for(var i=0; i<route.length; i++){
         counter = 0
 
         if(i!=0){
-            counter = getBorderOfSubsection("left", polygon, route, counter, subsection)
+            counter = getBorderOfSubsection(polygon, route, counter, subsection)
         }
 
         subsection[counter] = route[i]
         i++
         counter++
-        console.log("i: "+i)
-        console.log("counter: "+ counter)
-        console.log("Enter while")
         while(isPointInPoly(polygon, route[i]) == false){
             subsection[counter] = route[i]
             if(i<route.length-1) i++
             else break
             counter++
-            console.log("i: "+i)
-            console.log("counter: "+ counter)
-            console.log("repeat while")
         }
 
-        counter = getBorderOfSubsection("right", polygon, route, counter, subsection)
-        
-        //
+        counter = getBorderOfSubsection(polygon, route, counter, subsection)
 
         if(i>=route.length) break
         pointsOutsideOfPoly[pointsOutsideOfPolyLength] = subsection
@@ -194,62 +186,55 @@ for(var i=0; i<route.length; i++){
 }
 
 // site = left or right
-function getBorderOfSubsection(site, polygon, route, counter, subsection){
+function getBorderOfSubsection(polygon, route, counter, subsection){
     var crossPointDist = new Array() // will contain all distances from the last point outside the polygon to all segments of the polygon
 
-    if(site == "right"){
-        for(var j=0; j<polygon.length-1; j++){
-        crossPointDist[j] = intersect([route[i-1],route[i]],[polygon[j],polygon[j+1]])
-        }
-        for(j=0; j<crossPointDist.length; j++){
-            if(crossPointDist[j]!= null) {
-                crossPointDist[j] = [crossPointDist[j],calculateDistance(crossPointDist[j],route[i-1])]
-            }
-            else crossPointDist[j] = [crossPointDist[j],999999999]
-        }
-        crossPointDist.sort(function([a,b],[c,d]){return b-d})
-        subsection[counter] = crossPointDist[0][0]
-        counter++
-        return counter
+    for(var j=0; j<polygon.length-1; j++){
+    crossPointDist[j] = intersect([route[i-1],route[i]],[polygon[j],polygon[j+1]])
     }
-    // LEFT doesn't work
-    else if (site == "left"){
-        for(var j=0; j<polygon.length-1; j++){
-            crossPointDist[j] = intersect([route[i],route[i+1]],[polygon[j],polygon[j+1]])
-            }
-            for(j=0; j<crossPointDist.length; j++){
-                if(crossPointDist[j]!= null) {
-                    crossPointDist[j] = [crossPointDist[j],calculateDistance(crossPointDist[j],route[i])]
-                }
-                else crossPointDist[j] = [crossPointDist[j],999999999]
-            }
-            crossPointDist.sort(function([a,b],[c,d]){return b-d})
-            subsection[counter] = crossPointDist[0][0]
-            counter++
-            return counter
+    for(j=0; j<crossPointDist.length; j++){
+        if(crossPointDist[j]!= null) {
+            crossPointDist[j] = [crossPointDist[j],calculateDistance(crossPointDist[j],route[i-1])]
+        }
+        else crossPointDist[j] = [crossPointDist[j],999999999]
     }
-    
-}
+    crossPointDist.sort(function([a,b],[c,d]){return b-d})
+    subsection[counter] = crossPointDist[0][0]
+    counter++
+    return counter
+}   
+
 
 //builds up table from downside (adds rows on the top)
 function addTable(length, lat, lon)
 {
     var table = document.getElementById("table")
     var row = table.insertRow(0)
-    var cellLength = table.insertCell(0)
-    var cellLat = table.insertCell(1)
-    var cellLon = table.insertCell(2)
+    var cellLength = row.insertCell(0)
+    var cellLat = row.insertCell(1)
+    var cellLon = row.insertCell(2)
     cellLength.innerHTML = length
     cellLat.innerHTML = lat
     cellLon.innerHTML = lon
 }
 
 let distances = new Array()
-var dist;
+var dist
+var points
 
 for(var i=0; i<pointsOutsideOfPoly.length; i++){
     for(var j=0; j<pointsOutsideOfPoly[i].length-1; j++){
-        dist = calculateDistance(pointsOutsideOfPoly[i][j], pointsOutsideOfPoly[i][j+1])
-        distances = []////
+        points = [pointsOutsideOfPoly[i][j], pointsOutsideOfPoly[i][j+1]]
+        dist = calculateDistance(points[0], points[1])
+        
+        distances[j] = [dist,points]
+        console.log(distances[j])
     }
 }
+
+distances.sort(function([a,b],[c,d]){return a-c})
+
+for(i=distances.length-1; i>=0; i--){
+    addTable(distances[i][0],distances[i][1][0],distances[i][1][1])
+}
+
