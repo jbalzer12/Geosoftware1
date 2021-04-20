@@ -1,14 +1,22 @@
+h1, p, table, div{
+    font-family: Tahoma, Verdana, sans-serif;
+}
+table {
+    font-family: Tahoma, Verdana, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
 table, th, td {
     padding: 10px;
     border: 0.1px solid black;
     border-collapse: collapse;
-    font-family: Tahoma, Verdana, sans-serif;
 }
-table{
-    width: 100%
+th, td {
+    text-align: left;
+    padding: 8px;
 }
 .th{
-    height: 100 px;
+    height: 100 px; 
     text-align: middle
 }
 .th, .td{
@@ -19,11 +27,13 @@ tr{
     height: 50px
 }
 tr:nth-child(even) {
-    background-color: #f2f2f2
+    background-color: #f2f2f2;
 }
 div{
     padding-top: 20px;
     height: 200 px;
-    font-family: Tahoma, Verdana, sans-serif;
     font-size: 18px;
+}
+body{
+    padding: 20px;
 }

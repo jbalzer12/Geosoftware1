@@ -355,7 +355,7 @@ const table = document.createElement("table")
 const hrow = document.createElement("tr")
 table.appendChild(hrow)
 
-var listCaptions = [" Distance (in km) ", " Start coordinates ", "End coordinates "]
+var listCaptions = [" Distance (in km) ", " Start coordinate ", "End coordinate "]
 // Now the first line with the headings gets build up 
 for(let caption of listCaptions){
     const th = document.createElement("th")
