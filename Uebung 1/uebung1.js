@@ -217,75 +217,6 @@ function isPointInPoly(plgn, pnt)
     return inside;
 }
 
-// some arrays and variables, which are needed for the following calculation
-let pointsInsideOfPoly = new Array()
-let pointsOutsideOfPoly = new Array()
-let pointsOutsideOfPolyLength = 0
-let pointsInsideOfPolyLength = 0
-let counter = 0
-
-// Recognizes all points from route which are inside of the polygon and those, 
-// which are laying outside. Then also calculates the point where the line crosses
-// the polygon
-for(var i=0; i<route.length-1; i++){
-    if(isPointInPoly(polygon, route[i]) == false){
-
-        var subsection = new Array()
-        counter = 0
-        // Checks whether the coordinate is the first in the given array.
-        // If it would be, the "getBorderOfSubsection"-algorithm would not work
-        if(i!=0){
-            // Calculates the intersection
-            counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
-        }
-
-        subsection[counter] = route[i]
-        i++
-        counter++
-        while(isPointInPoly(polygon, route[i]) == false){
-            subsection[counter] = route[i]
-            if(i<route.length-1) i++
-            else break
-            counter++
-        }
-
-        // Calculates the intersection
-        counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
-        if(i>=route.length) break
-        pointsOutsideOfPoly[pointsOutsideOfPolyLength] = subsection
-        pointsOutsideOfPolyLength++
-        
-        i--
-    } else { // points inside of polygon: isPointInPoly(polygon, route[i]) == true)
-        var subsection = new Array()
-        counter = 0
-        // Checks whether the coordinate is the first in the given array.
-        // If it would be, the "getBorderOfSubsection"-algorithm would not work
-        if(i!=0){
-            // Calculates the intersection
-            counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
-        }
-
-        subsection[counter] = route[i]
-        i++
-        counter++
-        while(isPointInPoly(polygon, route[i]) == true){
-            subsection[counter] = route[i]
-            if(i<route.length-1) i++
-            else break
-            counter++
-        }
-        // Calculates the intersection
-        counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
-
-        if(i>=route.length) break
-        pointsInsideOfPoly[pointsInsideOfPolyLength] = subsection
-        pointsInsideOfPolyLength++
-
-        i--
-    }
-}
-
 /**
  * @function getBorderOfSubsection - Function that calculates the point, where a sequence crosses the polygon
  * @param {[[double,double],[double,double],...,[double,double]]} polygon - Represents the polygon we are working with
@@ -296,7 +227,7 @@ for(var i=0; i<route.length-1; i++){
  * @param {int} i - This iterator is needed to keep in memory for the position in the route
  * @returns counter - The counter value gets changed in this function so it gets returned
  */
-function getBorderOfSubsection(polygon, route, counter, subsection, i){
+ function getBorderOfSubsection(polygon, route, counter, subsection, i){
     var crossPointDist = new Array() // will contain all distances from the last point outside the polygon to all segments of the polygon
 
     for(var j=0; j<polygon.length-1; j++){
@@ -312,7 +243,85 @@ function getBorderOfSubsection(polygon, route, counter, subsection, i){
     subsection[counter] = crossPointDist[0][0] // adds the nearest intersection-point to the subsection-array
     counter++
     return counter
-}   
+}  
+
+var linestring = route
+
+// some arrays, which are needed for the following calculation 
+let pointsInsideOfPoly = new Array()
+let pointsOutsideOfPoly = new Array() 
+/**
+ * @function mainCalculation - Recognizes all points from route which are inside of the polygon and those, 
+ * which are laying outside. Then also calculates the point where the line crosses the polygon
+ */
+function mainCalculation(route){
+    // some variables, which are needed for the following calculation  
+    pointsInsideOfPoly = new Array()
+    pointsOutsideOfPoly = new Array() 
+    let pointsOutsideOfPolyLength = 0
+    let pointsInsideOfPolyLength = 0
+    let counter = 0
+    for(var i=0; i<route.length-1; i++){
+
+        if(isPointInPoly(polygon, route[i]) == false){
+            var subsection = new Array()
+            counter = 0
+            // Checks whether the coordinate is the first in the given array.
+            // If it would be, the "getBorderOfSubsection"-algorithm would not work
+            if(i!=0){
+                // Calculates the intersection
+                counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
+            }
+
+            subsection[counter] = route[i]
+            i++
+            counter++
+            while(isPointInPoly(polygon, route[i]) == false){
+                subsection[counter] = route[i]
+                if(i<route.length-1) i++
+                else break
+                counter++
+            }
+
+            // Calculates the intersection
+            counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
+            if(i>=route.length) break
+            pointsOutsideOfPoly[pointsOutsideOfPolyLength] = subsection
+            pointsOutsideOfPolyLength++
+            
+            i--
+            
+        
+        } else { // points inside of polygon: isPointInPoly(polygon, route[i]) == true)
+            var subsection = new Array()
+            counter = 0
+            // Checks whether the coordinate is the first in the given array.
+            // If it would be, the "getBorderOfSubsection"-algorithm would not work
+           if(i!=0){
+                // Calculates the intersection
+                counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
+            }
+
+            subsection[counter] = route[i]
+            i++
+            counter++
+            while(isPointInPoly(polygon, route[i]) == true){
+                subsection[counter] = route[i]
+                if(i<route.length-1) i++
+                else break
+                counter++
+            }
+            // Calculates the intersection
+            counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
+
+            if(i>=route.length) break
+            pointsInsideOfPoly[pointsInsideOfPolyLength] = subsection
+            pointsInsideOfPolyLength++
+
+            i--
+        }
+    } 
+}
 
 // needed array and variables for the following calculations
 let distances = new Array() // will contain all relevant data
@@ -320,7 +329,6 @@ var dist
 var startpoint
 var endpoint
 // The subsequence-array for the subsequences inside as well as outside of the polygon get merged
-var lists = [pointsOutsideOfPoly, pointsInsideOfPoly]
 
 /**
  * @function compressData - The function compressed all data into the (now) relevant data.
@@ -342,50 +350,61 @@ function compressData(list)
     }
 }
 
-// Now the "copmressData"-Function gets used
-for(var i=0; i<lists.length; i++){
-    compressData(lists)
+
+function main(routeForCalc){
+    // Recognizes all points from route which are inside of the polygon and those, 
+    // which are laying outside. Then also calculates the point where the line crosses
+    // the polygon
+    mainCalculation(routeForCalc)
+
+    var lists = [pointsOutsideOfPoly, pointsInsideOfPoly]
+
+    // Now the "copmressData"-Function gets used
+    for(var i=0; i<lists.length; i++){
+        compressData(lists)
+    }
+
+    // Now all the elements in the array with all the needed data gets sorted after the length of each section
+    distances.sort(function([a,b],[c,d]){return a-c}) 
+
+    // some constants to build up a table for the HTML-webpage
+    const table = document.createElement("table")
+    const hrow = document.createElement("tr")
+    table.appendChild(hrow)
+
+    var listCaptions = [" Distance (in km) ", " Start coordinate ", "End coordinate "]
+    // Now the first line with the headings gets build up 
+    for(let caption of listCaptions){
+        const th = document.createElement("th")
+        const thtext = document.createTextNode(caption)
+        th.appendChild(thtext)
+        hrow.appendChild(th)
+    }
+
+    // Now the table gets filled up with all the values from the relevant-data-array
+    for(let distance of distances){
+        const drow = document.createElement("tr")
+        table.appendChild(drow)
+        
+        for(let elements of distance){
+            const td = document.createElement("td")
+            const thtext = document.createTextNode(elements)
+            td.appendChild(thtext)
+            drow.appendChild(td)
+        } 
+    }
+
+    document.getElementById("table").appendChild(table)
+
+    // And also the final lenght of the route gets calucalated.
+    // But here the know coordinates (also the intersection-coordinates) get used
+    // So the value might be a little bit different from the original length of the route
+    var finalSum = 0
+    for(let distance of distances){
+        finalSum += distance[0]
+    }
+
+    document.getElementById("finalSum").innerHTML = "<b>Total length of the route: </b>"+finalSum+" km"
 }
 
-// Now all the elements in the array with all the needed data gets sorted after the length of each section
-distances.sort(function([a,b],[c,d]){return a-c}) 
-
-// some constants to build up a table for the HTML-webpage
-const table = document.createElement("table")
-const hrow = document.createElement("tr")
-table.appendChild(hrow)
-
-var listCaptions = [" Distance (in km) ", " Start coordinate ", "End coordinate "]
-// Now the first line with the headings gets build up 
-for(let caption of listCaptions){
-    const th = document.createElement("th")
-    const thtext = document.createTextNode(caption)
-    th.appendChild(thtext)
-    hrow.appendChild(th)
-}
-
-// Now the table gets filled up with all the values from the relevant-data-array
-for(let distance of distances){
-    const drow = document.createElement("tr")
-    table.appendChild(drow)
-    
-    for(let elements of distance){
-        const td = document.createElement("td")
-        const thtext = document.createTextNode(elements)
-        td.appendChild(thtext)
-        drow.appendChild(td)
-    } 
-}
-
-document.getElementById("table").appendChild(table)
-
-// And also the final lenght of the route gets calucalated.
-// But here the know coordinates (also the intersection-coordinates) get used
-// So the value might be a little bit different from the original length of the route
-var finalSum = 0
-for(let distance of distances){
-    finalSum += distance[0]
-}
-
-document.getElementById("finalSum").innerHTML = "<b>Total length of the route: </b>"+finalSum+" km"
-
+main(linestring)
