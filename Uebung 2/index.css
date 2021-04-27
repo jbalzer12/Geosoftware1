@@ -1,0 +1,54 @@
+h1, p, table, div{
+    font-family: Tahoma, Verdana, sans-serif;
+}
+table {
+    font-family: Tahoma, Verdana, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+table, th, td {
+    padding: 10px;
+    border: 0.1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+.th{
+    height: 100px; 
+    text-align: middle
+}
+.th, .td{
+    height: 500px;
+    text-align: left
+}
+tr{
+    height: 50px
+}
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+#finalSum{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: 200 px;
+    font-size: 18px;
+}
+body{
+    padding: 20px;
+}
+#input{
+    font-family: Tahoma, Verdana, sans-serif;
+    width: 500px;
+    height: 150px;
+    padding-top: -50px;
+}
+.button{
+    background-color: #e7e7e7; 
+    color: black;
+    border: none;
+    padding: 15px 32px;
+    font-size: 16px;
+    border: 5px solid white
+}
