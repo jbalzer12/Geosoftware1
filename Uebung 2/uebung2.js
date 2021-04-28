@@ -206,9 +206,9 @@ function isPointInPoly(plgn, pnt)
     var x = pnt[0], y = pnt[1]
     
     var inside = false
-    for (var i = 0, j = plgn.length - 1; i < plgn.length; j = i++) {
-        var xi = plgn[i][0], yi = plgn[i][1]
-        var xj = plgn[j][0], yj = plgn[j][1]
+    for (var i = 0, j = plgn.coordinates.length - 1; i < plgn.coordinates.length; j = i++) {
+        var xi = plgn.coordinates[i][0], yi = plgn.coordinates[i][1]
+        var xj = plgn.coordinates[j][0], yj = plgn.coordinates[j][1]
         
         var intersect = ((yi > y) != (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)
         if (intersect) inside = !inside;
@@ -219,8 +219,8 @@ function isPointInPoly(plgn, pnt)
 
 /**
  * @function getBorderOfSubsection - Function that calculates the point, where a sequence crosses the polygon
- * @param {[[double,double],[double,double],...,[double,double]]} polygon - Represents the polygon we are working with
- * @param {[[double,double],[double,double],...,[double,double]]} route - Represents the route we are checking out
+ * @param {JSONConstructor} polygon - Represents the polygon we are working with
+ * @param {JSONConstructor} route - Represents the route we are checking out
  * @param {int} counter - The counter counts the amount of coordinates which were added to the array of subsequences 
  * @param {[[double,double],[double,double],...,[double,double]]} subsection - Represents a subsection which lays 
  * either inside the polygon or outside
@@ -230,12 +230,12 @@ function isPointInPoly(plgn, pnt)
  function getBorderOfSubsection(polygon, route, counter, subsection, i){
     var crossPointDist = new Array() // will contain all distances from the last point outside the polygon to all segments of the polygon
 
-    for(var j=0; j<polygon.length-1; j++){
-    crossPointDist[j] = intersect([route[i-1],route[i]],[polygon[j],polygon[j+1]])
+    for(var j=0; j<polygon.coordinates.length-1; j++){
+    crossPointDist[j] = intersect([route.coordinates[i-1],route.coordinates[i]],[polygon.coordinates[j],polygon.coordinates[j+1]])
     }
     for(j=0; j<crossPointDist.length; j++){
         if(crossPointDist[j]!= null) {
-            crossPointDist[j] = [crossPointDist[j],calculateDistance(crossPointDist[j],route[i-1])]
+            crossPointDist[j] = [crossPointDist[j],calculateDistance(crossPointDist[j],route.coordinates[i-1])]
         }
         else crossPointDist[j] = [crossPointDist[j],999999999]
     }
@@ -283,15 +283,26 @@ function clearTableWithoutHeading(){
     }
 }
 
+/**
+ * Builds a JSON object 
+ * @param {[[coordinates],[coordinates],..,[coordinates]]} array - Includes the array which gets tranformed
+ * @param {string} type  - Includes the information about the object-type
+ */
+function JSONConstructor(array, type){
+    this.type = type
+    this.coordinates = array
+}
+
 // This variable is the place where the route which gets intersected with the polygon is saved
-var linestring = route
+var linestring
 /**
  * @function {getInputValue} - Reads the inpute from textarea and saves it as "linestring".
  * Then it the main-method gets called with the new route.
  */
 function getInputValue(){
     if(isValid(document.getElementById("input").value) == true){ // Checks whether the input is valid
-        linestring = JSON.parse(document.getElementById("input").value).coordinates
+        linestring = JSON.parse(document.getElementById("input").value)
+        //linestring = JSON.parse(document.getElementById("input").value).coordinates
         main(linestring)
     } else { // Throws an error if not
         document.getElementById("errorMessage").innerHTML = "ERROR: This is not a valid GeoJSON"
@@ -312,6 +323,7 @@ let pointsOutsideOfPoly
 /**
  * @function mainCalculation - Recognizes all points from route which are inside of the polygon and those, 
  * which are laying outside. Then also calculates the point where the line crosses the polygon
+ * @param {JSON} route - Enter an LineString-(Geo)JSON
  */
 function mainCalculation(route){
     // some variables, which are needed for the following calculation  
@@ -320,9 +332,9 @@ function mainCalculation(route){
     let pointsOutsideOfPolyLength = 0
     let pointsInsideOfPolyLength = 0
     let counter = 0
-    for(var i=0; i<route.length-1; i++){
+    for(var i=0; i<route.coordinates.length-1; i++){
 
-        if(isPointInPoly(polygon, route[i]) == false){
+        if(isPointInPoly(polygon, route.coordinates[i]) == false){
             var subsection = new Array()
             counter = 0
             // Checks whether the coordinate is the first in the given array.
@@ -331,23 +343,23 @@ function mainCalculation(route){
                 // Calculates the intersection
                 counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
             }
-            subsection[counter] = route[i]
+            subsection[counter] = route.coordinates[i]
             i++
             counter++
-            while(isPointInPoly(polygon, route[i]) == false){
-                subsection[counter] = route[i]
-                if(i<route.length-1) i++
+            while(isPointInPoly(polygon, route.coordinates[i]) == false){
+                subsection[counter] = route.coordinates[i]
+                if(i<route.coordinates.length-1) i++
                 else break
                 counter++
             }
             // Calculates the intersection
             counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
-            if(i>=route.length) break
+            if(i>=route.coordinates.length) break
             pointsOutsideOfPoly[pointsOutsideOfPolyLength] = subsection
             pointsOutsideOfPolyLength++
             
             i--
-        } else { // points inside of polygon: isPointInPoly(polygon, route[i]) == true)
+        } else { // points inside of polygon: isPointInPoly(polygon, route.coordinates[i]) == true)
             var subsection = new Array()
             counter = 0
             // Checks whether the coordinate is the first in the given array.
@@ -356,18 +368,18 @@ function mainCalculation(route){
                 // Calculates the intersection
                 counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
             }
-            subsection[counter] = route[i]
+            subsection[counter] = route.coordinates[i]
             i++
             counter++
-            while(isPointInPoly(polygon, route[i]) == true){
-                subsection[counter] = route[i]
-                if(i<route.length-1) i++
+            while(isPointInPoly(polygon, route.coordinates[i]) == true){
+                subsection[counter] = route.coordinates[i]
+                if(i<route.coordinates.length-1) i++
                 else break
                 counter++
             }
             // Calculates the intersection
             counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
-            if(i>=route.length) break
+            if(i>=route.coordinates.length) break
             pointsInsideOfPoly[pointsInsideOfPolyLength] = subsection
             pointsInsideOfPolyLength++
 
@@ -401,6 +413,13 @@ function compressData(list)
         } 
     }
 }
+
+// Transforms given arrays to JSONs by building up new objects
+polygon = new JSONConstructor(polygon, "Polygon")
+document.getElementById("polygon").innerHTML = JSON.stringify(polygon)
+route = new JSONConstructor(route, "LineString")
+document.getElementById("route").innerHTML = JSON.stringify(route)
+linestring = route
 
 var lists
 function main(routeForCalc){
