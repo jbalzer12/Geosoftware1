@@ -40,26 +40,26 @@ body{
 }
 #input{
     font-family: Tahoma, Verdana, sans-serif;
-    width: 300px;
+    width: 45%;
     height: 300px;
 }
 .button{
     background-color: #6e9aa0cb; 
-    width: 300px; 
+    width: 45%; 
     color: black;
     border: none;
     padding: 15px 32px;
-    font-size: 16px;
+    font-size: 18px;
     border: 5px solid white
 }
 #polygon{
     font-family: Tahoma, Verdana, sans-serif;
-    width: 600px;
+    width: 90%;
     height: 150px;
 }
 #route{
     font-family: Tahoma, Verdana, sans-serif;
-    width: 300px;
+    width: 45%;
     height: 300px;
 }
 #errorMessage{
