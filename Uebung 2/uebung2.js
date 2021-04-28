@@ -222,7 +222,7 @@ function isPointInPoly(plgn, pnt)
  * @param {JSONConstructor} polygon - Represents the polygon we are working with
  * @param {JSONConstructor} route - Represents the route we are checking out
  * @param {int} counter - The counter counts the amount of coordinates which were added to the array of subsequences 
- * @param {[[double,double],[double,double],...,[double,double]]} subsection - Represents a subsection which lays 
+ * @param {[[double,double],[double,double],...,[double,dousble]]} subsection - Represents a subsection which lays 
  * either inside the polygon or outside
  * @param {int} i - This iterator is needed to keep in memory for the position in the route
  * @returns counter - The counter value gets changed in this function so it gets returned
