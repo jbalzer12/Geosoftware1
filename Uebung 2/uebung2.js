@@ -275,11 +275,11 @@ function clearTableWithoutHeading(){
  * @function {clearTable} - Clears table and deletes all rows except the head-row
  */
  function clearTable(){
-    var t = document.getElementById("table")
+    var t = document.getElementById("table") // saves the elements in this html element
     var childCounter = t.childElementCount
 
     for(var i=0; i<childCounter; i++){
-        t.removeChild(t.lastChild)
+        t.removeChild(t.lastChild) // removes children
     }
 }
 
