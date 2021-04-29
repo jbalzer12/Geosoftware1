@@ -65,3 +65,10 @@ body{
 #errorMessage{
     padding-left: 330px;
 }
+#uploadfield{
+    padding: 10px
+}
+#uploadInfo{
+    padding-left: 10px;
+    padding-top: 10px
+}

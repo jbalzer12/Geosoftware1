@@ -245,78 +245,6 @@ function isPointInPoly(plgn, pnt)
     return counter
 }  
 
-/**
- *Function checks whether the given string is a valid stringified JSON
- *@function {isvalid}
- *@param {string} str - stringified JSON
- *@throws Will throw an error if the entered string is not a stringified JSON
- */
- function isValid(str){
-	try{
-		JSON.parse(str);
-	} catch (e) {
-		return false;
-	}
-	return true;
-}
-
-/**
- * @function {clearTableWithoutHeading} - Clears table and deletes all rows except the head-row
- */
-function clearTableWithoutHeading(){
-    var t = document.getElementById("table")
-    var childCounter = t.childElementCount
-
-    for(var i=0; i<childCounter-1; i++){
-        t.removeChild(t.lastChild)
-    }
-}
-/**
- * @function {clearTable} - Clears table and deletes all rows except the head-row
- */
- function clearTable(){
-    var t = document.getElementById("table") // saves the elements in this html element
-    var childCounter = t.childElementCount
-
-    for(var i=0; i<childCounter; i++){
-        t.removeChild(t.lastChild) // removes children
-    }
-}
-
-/**
- * Builds a JSON object 
- * @param {[[coordinates],[coordinates],..,[coordinates]]} array - Includes the array which gets tranformed
- * @param {string} type  - Includes the information about the object-type
- */
-function JSONConstructor(array, type){
-    this.type = type
-    this.coordinates = array
-}
-
-// This variable is the place where the route which gets intersected with the polygon is saved
-var linestring
-/**
- * @function {getInputValue} - Reads the inpute from textarea and saves it as "linestring".
- * Then it the main-method gets called with the new route.
- */
-function getInputValue(){
-    if(isValid(document.getElementById("input").value) == true){ // Checks whether the input is valid
-        linestring = JSON.parse(document.getElementById("input").value)
-        //linestring = JSON.parse(document.getElementById("input").value).coordinates
-        main(linestring)
-    } else { // Throws an error if not
-        document.getElementById("errorMessage").innerHTML = "ERROR: This is not a valid GeoJSON"
-    }
-}
-/**
- * @function {useStandard} - Uses the given route as route for the calculation. Useful for the case 
- * there was already entered a new LineaString but the user wants to replace it by the old route.
- */
-function useStandard(){
-    linestring = route
-    main(linestring)
-}
-
 // some arrays, which are needed for the following calculation 
 let pointsInsideOfPoly
 let pointsOutsideOfPoly
@@ -413,6 +341,101 @@ function compressData(list)
         } 
     }
 }
+
+// ------------ Task 2 --------------
+
+/**
+ *Function checks whether the given string is a valid stringified JSON
+ *@function {isvalid}
+ *@param {string} str - stringified JSON
+ *@throws Will throw an error if the entered string is not a stringified JSON
+ */
+ function isValid(str){
+	try{
+		JSON.parse(str);
+	} catch (e) {
+		return false;
+	}
+	return true;
+}
+
+/**
+ * @function {clearTableWithoutHeading} - Clears table and deletes all rows except the head-row
+ */
+function clearTableWithoutHeading(){
+    var t = document.getElementById("table")
+    var childCounter = t.childElementCount
+
+    for(var i=0; i<childCounter-1; i++){
+        t.removeChild(t.lastChild)
+    }
+}
+/**
+ * @function {clearTable} - Clears table and deletes all rows except the head-row
+ */
+ function clearTable(){
+    var t = document.getElementById("table") // saves the elements in this html element
+    var childCounter = t.childElementCount
+
+    for(var i=0; i<childCounter; i++){
+        t.removeChild(t.lastChild) // removes children
+    }
+}
+
+/**
+ * Builds a JSON object 
+ * @param {[[coordinates],[coordinates],..,[coordinates]]} array - Includes the array which gets tranformed
+ * @param {string} type  - Includes the information about the object-type
+ */
+function JSONConstructor(array, type){
+    this.type = type
+    this.coordinates = array
+}
+
+// This variable is the place where the route which gets intersected with the polygon is saved
+var linestring
+/**
+ * @function {getInputValue} - Reads the inpute from textarea and saves it as "linestring".
+ * Then it the main-method gets called with the new route.
+ */
+function getInputValue(){
+    if(isValid(document.getElementById("input").value) == true){ // Checks whether the input is valid
+        linestring = JSON.parse(document.getElementById("input").value)
+        //linestring = JSON.parse(document.getElementById("input").value).coordinates
+        main(linestring)
+    } else { // Throws an error if not
+        document.getElementById("errorMessage").innerHTML = "ERROR: This is not a valid GeoJSON"
+    }
+}
+/**
+ * @function {useStandard} - Uses the given route as route for the calculation. Useful for the case 
+ * there was already entered a new LineaString but the user wants to replace it by the old route.
+ */
+function useStandard(){
+    linestring = route
+    main(linestring)
+}
+
+let uploadfield = document.getElementById("uploadfield")
+var reader
+// When the user chooses the option to upload a .json file it gets read by the following code-lines
+uploadfield.addEventListener('change', function(){
+    if(uploadfield.isDefaultNamespace.length > 0){
+        reader = new FileReader()
+        reader.readAsText(uploadfield.files[0])
+    }
+})
+/**
+ * @function {getFile} - This functin gets calles in case a user wants to use his/her uploaded .json file.
+ * Now the used linestring gets replaced by the read .json
+ */
+function getFile(){
+    linestring = JSON.parse(reader.result)
+    main(linestring)
+}
+
+
+// ------------ Task 2 --------------
 
 // Transforms given arrays to JSONs by building up new objects
 polygon = new JSONConstructor(polygon, "Polygon")
