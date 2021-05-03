@@ -40,12 +40,17 @@ body{
 }
 #input{
     font-family: Tahoma, Verdana, sans-serif;
-    width: 45%;
+    width: 49%;
+    height: 300px;
+}
+#route{
+    font-family: Tahoma, Verdana, sans-serif;
+    width: 49%;
     height: 300px;
 }
 .button{
     background-color: #6e9aa0cb; 
-    width: 45%; 
+    width: 49%; 
     color: black;
     border: none;
     padding: 15px 32px;
@@ -54,16 +59,12 @@ body{
 }
 #polygon{
     font-family: Tahoma, Verdana, sans-serif;
-    width: 90%;
+    width: 98%;
     height: 150px;
 }
-#route{
-    font-family: Tahoma, Verdana, sans-serif;
-    width: 45%;
-    height: 300px;
-}
+
 #errorMessage{
-    padding-left: 330px;
+    text-align: center
 }
 #uploadfield{
     padding: 10px

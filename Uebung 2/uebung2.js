@@ -399,10 +399,21 @@ var linestring
  * Then it the main-method gets called with the new route.
  */
 function getInputValue(){
-    if(isValid(document.getElementById("input").value) == true){ // Checks whether the input is valid
+    /*if((JSON.parse(document.getElementById("input").value)).type != "LineString"){
+        document.getElementById("errorMessage").innerHTML = 'ERROR: This is not a LineString. <br> Expected form: {"type":"LineString","coordinates":[...]}'
+    } else if(isValid(document.getElementById("input").value) == true){ // Checks whether the input is valid
         linestring = JSON.parse(document.getElementById("input").value)
-        //linestring = JSON.parse(document.getElementById("input").value).coordinates
         main(linestring)
+    } else { // Throws an error if not
+        document.getElementById("errorMessage").innerHTML = "ERROR: This is not a valid GeoJSON"
+    }*/
+    if(isValid(document.getElementById("input").value) == true){ // Checks whether the input is valid
+        if((JSON.parse(document.getElementById("input").value)).type != "LineString"){
+            document.getElementById("errorMessage").innerHTML = 'ERROR: This is not a LineString. <br> Expected form: {"type":"LineString","coordinates":[...]}'
+        } else{
+            linestring = JSON.parse(document.getElementById("input").value)
+            main(linestring)
+        }
     } else { // Throws an error if not
         document.getElementById("errorMessage").innerHTML = "ERROR: This is not a valid GeoJSON"
     }
