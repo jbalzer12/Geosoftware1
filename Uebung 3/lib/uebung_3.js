@@ -38,7 +38,7 @@ async function geoFindMe() {
 var api
 
 function iniatializeAPI(key, coordinates){
-    api = "https://api.openweathermap.org/data/2.5/onecall?lat="
+    api = "https://api.openweathermap.org/data/2.5/onecall?units=metric&lat="
     api += coordinates[1]+"&lon="+coordinates[0]+"&exclude="+"hourly"+"&appid="+key
 }
 
