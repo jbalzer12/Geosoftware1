@@ -1,11 +1,8 @@
 "use strict"
 
-let result
+let result = [7.5957222282886505,51.9692984513806];
 
-function geoFindMe() {
-    //let lon;
-    //let lat;
-
+async function geoFindMe() {
     const status = document.querySelector('#status');
     const mapLink = document.querySelector('#map-link');
 
@@ -15,11 +12,9 @@ function geoFindMe() {
     function success(position) {
         const latitude  = position.coords.latitude;
         const longitude = position.coords.longitude;
-
-        //lon = longitude
-        //lat = latitude
-    
-        result = [longitude, latitude]
+        
+        result = []
+        result = [longitude, latitude];
 
         status.textContent = '';
         mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
@@ -36,51 +31,47 @@ function geoFindMe() {
     else {
       status.textContent = 'Locating…';
       navigator.geolocation.getCurrentPosition(success, error);
-    }  
-    //return result;
+    } 
 }
-  
-document.querySelector('#find-me').addEventListener('click', geoFindMe);
 
 
-
-var api = "https://api.openweathermap.org/data/2.5/onecall?lat="//+result[1]+'"&lon="'+result[0]+'"&exclude="+"hourly"+"&appid="'+apikey
-//api+=result[1]+"&lon="+result[0]+"&exclude="+"hourly"+"&appid="+clientAPIKey
+var api
 
 function iniatializeAPI(key, coordinates){
+    api = "https://api.openweathermap.org/data/2.5/onecall?lat="
     api += coordinates[1]+"&lon="+coordinates[0]+"&exclude="+"hourly"+"&appid="+key
 }
 
+var clientAPIKey;
 
+function getAPIKey(){
+    clientAPIKey = document.getElementById("apiField").value;
+}
+var response;
 function apiRequest(){
-    var response;
+    
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             // Typical action to be performed when the document is ready:
             document.getElementById("demo").innerHTML = xhttp.responseText;
-            response = xhttp.responseText;
+            response = JSON.parse(xhttp.responseText);
         }
     };
     xhttp.open("GET", api, true);
     xhttp.send(); 
-    return response;
 }
 
 function main(){
-    geoFindMe()
     if(clientAPIKey != undefined){
         iniatializeAPI(clientAPIKey, result)
     } 
     else {
          console.log("clientAPIKey id undefined. Enter APIKey")
-         break;
+         return
     }
-    //response = apiRequest();
-    var x = apiRequest();
-}
-
-var clientAPIKey;
-function getAPIKey(field){
-    clientAPIKey = document.getElementById(field).value;
+    apiRequest();
+    setTimeout(() => {
+        console.log(response);
+    }, 2000);
 }
