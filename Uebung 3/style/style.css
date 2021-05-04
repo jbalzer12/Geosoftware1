@@ -1,3 +1,8 @@
 h1, p, table, div{
     font-family: Tahoma, Verdana, sans-serif;
 }
+input{
+    width: 250px;
+    background-color: rgb(220, 241, 248);
+    border-color: black;
+}
