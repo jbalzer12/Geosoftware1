@@ -1,12 +1,12 @@
 <!DOCTYPE html>
     <head>
         <h1>Geosoftware 1, 2021 - Übung 3 </h1>
-        <p>Abgabe von: J. Balzer & A. Pilz</p>
+        <p id="subtitle">Abgabe von: J. Balzer & A. Pilz</p>
         <link rel="stylesheet" href="./style/style.css"/>
         <script src="./lib/uebung_3.js"></script>
     </head>
     <body>
-        <button id = "find-me" onclick="geoFindMe()">Show my location</button><br/>
+        <button id = "find-me" onclick="geoFindMe()">Ermittle aktuellen Standort</button><br/>
         <p id = "status"></p>
         <a id = "map-link" target="_blank"></a>
         <div id="demo"></div>
@@ -14,6 +14,15 @@
         <!--Textarea für die Eingabe der Route-->
         <input type="text" id="apiField" rows="1"></input>
         <!--Knopf zum abschicken der Eingabe-Route-->
-        <button type="button" onclick="getAPIKey()">Submit</button>
+        <button type="button" onclick="submit()">Eingabe</button>
+        <div>
+            <p id="source"></p>
+            <p id="timezone"></p>
+            <p id="temp"></p>
+            <p id="feels_like"></p>
+            <p id="humidity"></p>
+            <p id="pressure"></p>
+            <p id="wind"></p>
+        </div>
     </body>
 </html>

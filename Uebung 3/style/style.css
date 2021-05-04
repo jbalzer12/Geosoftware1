@@ -6,3 +6,9 @@ input{
     background-color: rgb(220, 241, 248);
     border-color: black;
 }
+#subtitle{
+    font-size: 20px;
+}
+#source{
+    font-size: 15px;
+}
