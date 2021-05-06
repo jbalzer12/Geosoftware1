@@ -399,6 +399,7 @@ var linestring
  * Then it the main-method gets called with the new route.
  */
 function getInputValue(){
+    document.getElementById("errorMessage").innerHTML = ""
     if(isValid(document.getElementById("input").value) == true){ // Checks whether the input is valid
         if((JSON.parse(document.getElementById("input").value)).type != "LineString"){
             document.getElementById("errorMessage").innerHTML = 'ERROR: This is not a LineString. Expected pattern: {"type":"LineString","coordinates":[...]}'
@@ -410,6 +411,7 @@ function getInputValue(){
         document.getElementById("errorMessage").innerHTML = "ERROR: This is not a valid GeoJSON"
     }
 }
+
 /**
  * @function {useStandard} - Uses the given route as route for the calculation. Useful for the case 
  * there was already entered a new LineaString but the user wants to replace it by the old route.
@@ -433,15 +435,16 @@ uploadfield.addEventListener('change', function(){
  * Now the used linestring gets replaced by the read .json
  */
 function getFile(){
+    document.getElementById("errorMessage2").innerHTML = ""
     if(isValid(reader.result) == true){ // Checks whether the input is valid
         if((JSON.parse(reader.result)).type != "LineString"){
-            document.getElementById("errorMessage").innerHTML = 'ERROR: This is not a LineString. Expected pattern: {"type":"LineString","coordinates":[...]}'
+            document.getElementById("errorMessage2").innerHTML = 'ERROR: This is not a LineString. Expected pattern: {"type":"LineString","coordinates":[...]}'
         } else{
             linestring = JSON.parse(reader.result)
             main(linestring)
         }
     } else { // Throws an error if not
-        document.getElementById("errorMessage").innerHTML = "ERROR: This is not a valid GeoJSON"
+        document.getElementById("errorMessage2").innerHTML = "ERROR: This is not a valid GeoJSON"
     }
 }
 
