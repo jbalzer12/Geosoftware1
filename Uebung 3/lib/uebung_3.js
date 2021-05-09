@@ -35,7 +35,7 @@ async function geoFindMe() {
 }
 
 
-var api
+var api;
 
 function iniatializeAPI(key, coordinates){
     api = "https://api.openweathermap.org/data/2.5/onecall?units=metric&lat="
@@ -47,13 +47,14 @@ var clientAPIKey;
 function getAPIKey(){
     clientAPIKey = document.getElementById("apiField").value;
 }
+
 var response;
+
 function apiRequest(){
-    
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            // Typical action to be performed when the document is ready:
+            //Typical action to be performed when the document is ready:
             //document.getElementById("demo").innerHTML = xhttp.responseText;
             response = JSON.parse(xhttp.responseText);
         }
