@@ -6,17 +6,19 @@
         <script src="./lib/uebung_3.js"></script>
     </head>
     <body>
+        <!--Button zum lokalisieren des Clients-->
         <button id = "find-me" onclick="geoFindMe()">Ermittle aktuellen Standort</button><br/>
+        <!--Statusfeld für die Geolokalisierung-->
         <p id = "status"></p>
-        <a id = "map-link" target="_blank"></a>
-        <div id="demo"></div>
-
+        <!--Clickable Link zur Positionsanzeige auf einer Karte-->
+        <a id = "map-link" target="_blank"></a><br>
+        <br></br>
         <!--Textarea für die Eingabe der Route-->
-        <input type="text" id="apiField" rows="1"></input>
+        <input type="text" id="apiField" rows="1" placeholder="Hier OpenWeather API-Key eingeben"></input>
         <!--Knopf zum abschicken der Eingabe-Route-->
         <button type="button" onclick="submit()">Eingabe</button>
+         <!--Ausgabe der Wetterdaten als Liste-->
         <div>
-            <p id="source"></p>
             <p id="timezone"></p>
             <p id="temp"></p>
             <p id="feels_like"></p>
