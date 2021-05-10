@@ -97,6 +97,10 @@ async function loadOpenWeather(api) {
     document.getElementById("humidity").innerHTML = "<b>Luftfeuchtigkeit: </b>" + response.current.humidity + " %";
     document.getElementById("pressure").innerHTML = "<b>Luftdruck: </b>" + response.current.pressure + " hPa";
     document.getElementById("wind").innerHTML = "<b>Wind: </b> " + toDirection(response.current.wind_deg) + " " + response.current.wind_speed + " km/h";
+    if(response.alerts[0].description != null){
+        document.getElementById("description").innerHTML = '<b>Beschreibung: </b><br>' + response.alerts[0].description;
+        document.getElementById("source").innerHTML = "<b>Quelle: </b>" + response.alerts[0].sender_name;
+    }
 }
 
 /**
