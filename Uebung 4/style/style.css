@@ -1,0 +1,17 @@
+h1, p, table, div, a{
+    font-family: Tahoma, Verdana, sans-serif;
+}
+input{
+    width: 250px;
+    background-color: rgb(220, 241, 248);
+    border-color: black;
+}
+#subtitle{
+    font-size: 20px;
+}
+#api-field{
+    padding-top: 30px;
+}
+#source{
+    font-size: 13px;
+}
