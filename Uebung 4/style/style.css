@@ -7,3 +7,6 @@ h1, p, table, div, a{
 #map { 
     height: 600px; 
 }
+#apiField{
+    width: 250px;
+}

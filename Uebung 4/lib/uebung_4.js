@@ -1,4 +1,56 @@
 "use strict"
+// ------------------------ Everything neede for the weather api request ----------------------------
+
+// The API gets stored in this variable.
+var api;
+
+/**
+ * @function {initializeAPI} - This funtion builds up the whole api to use it afterwards.
+ * @param {String} key - This key is user-dependent and has to be entered by the user himself.
+ * @param {[double, double]} coordinates - These are the requested coordinates. Either the
+ * browser location or the standard coordinates (GEO1).
+ */
+function iniatializeAPI(key, coordinates){
+    api = "https://api.openweathermap.org/data/2.5/onecall?units=metric&lat="
+    api += coordinates[1]+"&lon="+coordinates[0]+"&exclude="+"hourly"+"&appid="+key
+}
+
+//variable to store the API-Key
+var clientAPIKey;
+
+/**
+* @function {} - reads the API-Key from Input-Field
+* and the geolocatization is not possible.
+*/
+function getAPIKey(){
+    clientAPIKey = document.getElementById("apiField").value; //retrieve API-Key
+}
+
+//variable to store the response
+var response;
+
+/**
+*@function {loadOpenWeather} fetches results and prints them to the canvas
+*@param {api} complete api request
+*@returns {} 
+*/
+async function loadOpenWeather(api) {
+    let res = await fetch(api); //fetch results
+    response = await res.json(); //get result as json
+    //fill the html with information from the response
+    document.getElementById("timezone").innerHTML = "<b>Zeitzone: </b>" + response.timezone;
+    document.getElementById("temp").innerHTML = "<b>Temperatur: </b>" + response.current.temp + " °C";
+    document.getElementById("feels_like").innerHTML = "<b>Gefühlte Temperatur: </b>" + response.current.feels_like + " °C";
+    document.getElementById("humidity").innerHTML = "<b>Luftfeuchtigkeit: </b>" + response.current.humidity + " %";
+    document.getElementById("pressure").innerHTML = "<b>Luftdruck: </b>" + response.current.pressure + " hPa";
+    document.getElementById("wind").innerHTML = "<b>Wind: </b> " + toDirection(response.current.wind_deg) + " " + response.current.wind_speed + " km/h";
+    if(response.alerts[0].description != null){
+        document.getElementById("description").innerHTML = '<b>Beschreibung: </b><br>' + response.alerts[0].description;
+        document.getElementById("source").innerHTML = "<b>Quelle: </b>" + response.alerts[0].sender_name;
+    }
+}
+
+// ------------------------ Everything neede for the intersection calculation ----------------------------
 
 // This constant is the mean earth radius
 const R = 6371 
@@ -225,8 +277,13 @@ function isPointInPoly(plgn, pnt)
         else crossPointDist[j] = [crossPointDist[j],999999999]
     }
     crossPointDist.sort(function([a,b],[c,d]){ return b-d }) // sort the array to get rthe nearest intersection
+    // Marks the intersection on the map
+    if(i!=route.features[0].geometry.coordinates[0].length-1){
+        var marker = new L.marker([crossPointDist[0][0][1], crossPointDist[0][0][0]]).addTo(map)
+        marker.bindPopup("test"+i)
+        marker.openPopup()
+    }
     
-    var marker = new L.marker([crossPointDist[0][0][1], crossPointDist[0][0][0]]).addTo(map)
     return crossPointDist[0][0] // adds the nearest intersection-point to the subsection-array   
 }  
 /**
@@ -327,6 +384,8 @@ function mainCalculation(route){
     } 
 }
 
+// ------------------------ Everything neede for the leaflet map ----------------------------
+
 // Set map 
 var map = L.map('map').setView([51.975, 7.61], 13) 
 
@@ -365,9 +424,6 @@ map.addControl(drawControl)
 let rectangle
 map.on('draw:created', function (e){
     var type = e.layerType, layer = e.layer
-    if(type === 'marker'){
-        layer.bindPopup('A popup!')
-    }
     rectangle = layer.getLatLngs()
     drawnItems.addLayer(layer)
     console.log(rectangle)
@@ -375,4 +431,3 @@ map.on('draw:created', function (e){
 })
 
 var popup = L.popup();
-
