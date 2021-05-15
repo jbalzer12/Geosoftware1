@@ -1,157 +1,378 @@
 "use strict"
 
-//Standard position for weather request (Geo 1)
-let result = [7.5957222282886505,51.9692984513806];
-/**
- * @function {geoFindMe} - This function geolocates the browser-location.
- * source: https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API
- */
-async function geoFindMe() {
-    // To variables get intitialized to be used in a simpler way
-    const status = document.querySelector('#status');
-    const mapLink = document.querySelector('#map-link');
+// This constant is the mean earth radius
+const R = 6371 
 
-    // At first the reference for the link has to be empty. The link will show to actual 
-    // position on OpenStreetMap 
-    mapLink.href = '';
-    mapLink.textContent = '';
+/**
+*@function deg2rad - Function to convert degree to radian
+*@param {double} degree
+*@returns {double} radian
+*/
+function deg2rad(deg) 
+{
+    return deg * (Math.PI/180)
+}
+
+/**
+*@function rad2deg - Function to convert from radian to degree
+*@param {double} radian
+*@returns {double} degree 
+*/
+function rad2deg(rad)
+{
+    return rad * (180/Math.PI)
+}
+
+/**
+ * @function calculateDistance - Function to calculat the distance between two coordinates
+ * @param {double} coord1 - is the first coordinate [lat, lon]
+ * @param {double} coord2 - is the second coordinate [lat, lon]
+ * @returns {double} dist - returns the distance in km 
+ */
+ function calculateDistance(coord1, coord2) // works
+ {
+     var lat1 = deg2rad(coord1[0])
+     var lon1 = deg2rad(coord1[1])
+     var lat2 = deg2rad(coord2[0])
+     var lon2 = deg2rad(coord2[1])
+ 
+     var dLat = lat2-lat1
+     var dLon = lon2-lon1
+     var a = Math.sin(dLon/2) * Math.sin(dLon/2) +
+             Math.cos(lon1) * Math.cos(lon2) * 
+             Math.sin(dLat/2) * Math.sin(dLat/2)
+     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+     var dist = R * c // Distance in km
+     return dist
+ }
+
+/**
+ *@function getBearing - Function to calcuate bearing between two points
+ *@param {[double]} coord1 - Coordinates of the first point
+ *@param {[double]} coord2  - Coordinates of the second point
+ *@returns {String} bearing between the given points
+ *source: https://www.movable-type.co.uk/scripts/latlong.html
+*/
+function getBearing(coord1, coord2)
+{
+    // Transformation of given values 
+    var lat1 = deg2rad(coord1[0])
+    var lon1 = deg2rad(coord1[1])
+    var lat2 = deg2rad(coord2[0])
+    var lon2 = deg2rad(coord2[1])
+
+    const y = Math.sin(lon2-lon1) * Math.cos(lat2)
+    const x = Math.cos(lat1)*Math.sin(lat2) - Math.sin(lat1)*Math.cos(lat2)*Math.cos(lon2-lon1)
+    const theta = Math.atan2(y, x)
+    const brng = rad2deg(theta)
+    return (brng + 360) % 360
+}
+
+/**
+ * @function crossTrackDistance - The function calculates the crosstrackdistance. That
+ * is the distance between a path (coord1, coord2) and a point
+ * @param {[double, double]} coord1 - Is the start coordinate of a path
+ * @param {[double, double]} coord2 - Is the end coordinate of a path
+ * @param {[double, double]} coord3 - Is a point 
+ * @returns dist - is the crosstrackdistance between the path and a point
+ * source: https://www.movable-type.co.uk/scripts/latlong.html
+ */
+function crossTrackDistance(coord1, coord2, coord3) // calculates the distance between point (coord3) and line (coord1, coord2)
+{
+    var dstFstToThrd = calculateDistance(coord1, coord3)
+    var brgFstToThrd = getBearing(coord1, coord3)
+    var brgFstToSnd = getBearing(coord1, coord2)
+
+    var sigma = dstFstToThrd / R
+    var dist = Math.asin(Math.sin(sigma)*Math.sin(brgFstToThrd-brgFstToSnd)) * R
+    if(dist<0) return dist * (-1) // we would like to get the amount of the value (positive)
+    else return dist
+}
+
+/**
+ * @function pointOnLine - Calculates whether a point is located on a line
+ * @param {[[double, double],[double, double]]} line - Is the line which is involved
+ * @param {[double, double]} pnt - Is the point that is involved
+ * @returns 
+ */
+function pointOnLine(line, pnt)
+{
+    if(crossTrackDistance(line[0], line[1], pnt) == 0) return true
+    else return false
+}
+
+/**
+* @function intersect - Calculates the coordinate, where two sequences cross each other
+* @param {[[double, double],[double, double]]} segment1 - Builds up one sequence
+* @param {[[double, double],[double, double]]} segment2 - Builds up the other one
+* @returns intersectionPoint - That is the coordinate the sequences cross
+* source: https://www.movable-type.co.uk/scripts/latlong.html
+*/
+function intersect(segment1, segment2) // works 
+{
+    var coord11 = segment1[0]
+    var lat11 = coord11[0]; var lon11 = coord11[1]
+    var coord12 = segment1[1]
+    var lat12 = coord12[0]; var lon12 = coord12[1]
+    var coord21 = segment2[0]
+    var lat21 = coord21[0]; var lon21 = coord21[1]
+    var coord22 = segment2[1]
+    var lat22 = coord22[0]; var lon22 = coord22[1]
+     
+    // Transformation to radian
+    var phi1 = deg2rad(lat11), lambda1 = deg2rad(lon11)
+    var phi2 = deg2rad(lat21), lambda2 = deg2rad(lon21)
+    var theta13 = deg2rad(getBearing(coord11,coord12)), theta23 = deg2rad(getBearing(coord21,coord22))
+    var dphi = phi2-phi1, dlambda = lambda2-lambda1
+ 
+    var gamma12 = 2 * Math.asin(Math.sqrt(Math.sin(dphi/2) * Math.sin(dphi/2)
+        + Math.cos(phi1) * Math.cos(phi2) * Math.sin(dlambda/2) * Math.sin(dlambda/2)))
+    if (Math.abs(gamma12) < Number.EPSILON) {
+        //console.log("Coincident points")
+        return  [phi1, phi2]
+    }
+ 
+    var cosThetaA = (Math.sin(phi2)-Math.sin(phi1)*Math.cos(gamma12))/(Math.sin(gamma12)*Math.cos(phi1))
+    var cosThetaB = (Math.sin(phi1)-Math.sin(phi2)*Math.cos(gamma12))/(Math.sin(gamma12)*Math.cos(phi2))
+ 
+    var thetaA = Math.acos(Math.min(Math.max(cosThetaA, -1), 1))
+    var thetaB = Math.acos(Math.min(Math.max(cosThetaB, -1), 1))
     
-    /**
-     * @function {success} - This function gets executed if the request successes.
-     * It will build up an array "result" which contains the information about latitude and
-     * longitude. Afterwards it builds the link which is behind the printed coordinates.
-     * The link refers to OpenStreetMap to show the position on the map.
-     * @param {*} position - The answer we get from the browser
-     */
-    function success(position) {
-        const latitude  = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        
-        // This array will contain the needed information to work with them afterwards
-        result = [longitude, latitude];
-
-        status.textContent = 'Die Position ist:';
-        // The link gets built
-        mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
-        mapLink.textContent = `Breitengrad: ${latitude} °, Längengrad: ${longitude} °`;
+    var theta12, theta21
+ 
+    if(Math.sin(lambda2-lambda1) > 0) {
+        theta12 = thetaA
+        theta21 = 2 * Math.PI - thetaB
+    } else {
+        theta12 = 2 * Math.PI - thetaA
+        theta21 = thetaB
     }
 
-    /**
-     * @function {error} - This function gets called incase the request throws an error 
-     * and the geolocatization is not possible.
-     */
-    function error() {
-        status.textContent = 'Position kann nicht ermittelt werden!';
+    var alpha1 = theta13 - theta12
+    var alpha2 = theta21 - theta23
+
+    // If this case gets entered, it exists infinite solutions
+    if(Math.sin(alpha1) == 0 && Math.sin(alpha2) == 0) {
+        //console.log("infinite solutions") 
+        return null
     }
-    // Incase the user rejects the geolocalization or the browser rejects it itself, an error-message
-    // gets printed on the html-webite.
-    if(!navigator.geolocation) {
-        status.textContent = 'Die Geolokalisiation wird vom Browser nicht unterstützt';
-    } 
-    else {
-        // Incase everything succeeded the status "Loading.../Laden..." gets printed.
-        status.textContent = 'Laden...';
-        navigator.geolocation.getCurrentPosition(success, error);
-    } 
+    // If this case gets entered, it exists ambitious solutions
+    if(Math.sin(alpha1) * Math.sin(alpha2) < 0) {
+        //console.log("ambitious solutions") 
+        return null
+    }
+
+    var alpha3 = Math.acos(-Math.cos(alpha1)*Math.cos(alpha2)+Math.sin(alpha1)*Math.sin(alpha2)*Math.cos(gamma12))
+    var gamma13 = Math.atan2(Math.sin(gamma12)*Math.sin(alpha1)*Math.sin(alpha2), 
+        Math.cos(alpha2)+Math.cos(alpha1)*Math.cos(alpha3))
+    var phi3 = Math.asin(Math.min(Math.max(Math.sin(phi1)*Math.cos(gamma13) + Math.cos(phi1) * Math.sin(gamma13) * Math.cos(theta13), -1), 1))
+    var deltaLambda13 = Math.atan2(Math.sin(theta13)*Math.sin(gamma13)*Math.cos(phi1), 
+        Math.cos(gamma13)-Math.sin(phi1)*Math.sin(phi3))
+    
+    var lambda3 = lambda1 + deltaLambda13
+    
+    var intersectionPoint = [rad2deg(phi3), rad2deg(lambda3)%180]
+    if(intersectionPoint[0] < 0) intersectionPoint[0] = intersectionPoint[0] * (-1)
+    if(intersectionPoint[1] < 0) intersectionPoint[1] = intersectionPoint[1] * (-1)
+
+    return intersectionPoint
 }
-// The API gets stored in this variable.
-var api;
 
 /**
- * @function {initializeAPI} - This funtion builds up the whole api to use it afterwards.
- * @param {String} key - This key is user-dependent and has to be entered by the user himself.
- * @param {[double, double]} coordinates - These are the requested coordinates. Either the
- * browser location or the standard coordinates (GEO1).
+ * @function isPointInPoly - Checks out whether a point is located inside of a polygon
+ * @param {[[double,double],[double,double],...,[double,double]]} plgn - Represents a 
+ * list of coordinates, which build up a polygon
+ * @param {[double,double]} pnt - Represents one coordinate
+ * @returns inside - That is a boolean, that says whether the point lay inside or not
  */
-function iniatializeAPI(key, coordinates){
-    api = "https://api.openweathermap.org/data/2.5/onecall?units=metric&lat="
-    api += coordinates[1]+"&lon="+coordinates[0]+"&exclude="+"hourly"+"&appid="+key
-}
-
-//variable to store the API-Key
-var clientAPIKey;
-
-/**
-* @function {} - reads the API-Key from Input-Field
-* and the geolocatization is not possible.
-*/
-function getAPIKey(){
-    clientAPIKey = document.getElementById("apiField").value; //retrieve API-Key
-}
-
-//variable to store the response
-var response;
-
-/**
-*@function {loadOpenWeather} fetches results and prints them to the canvas
-*@param {api} complete api request
-*@returns {} 
-*/
-async function loadOpenWeather(api) {
-    let res = await fetch(api); //fetch results
-    response = await res.json(); //get result as json
-    //fill the html with information from the response
-    document.getElementById("timezone").innerHTML = "<b>Zeitzone: </b>" + response.timezone;
-    document.getElementById("temp").innerHTML = "<b>Temperatur: </b>" + response.current.temp + " °C";
-    document.getElementById("feels_like").innerHTML = "<b>Gefühlte Temperatur: </b>" + response.current.feels_like + " °C";
-    document.getElementById("humidity").innerHTML = "<b>Luftfeuchtigkeit: </b>" + response.current.humidity + " %";
-    document.getElementById("pressure").innerHTML = "<b>Luftdruck: </b>" + response.current.pressure + " hPa";
-    document.getElementById("wind").innerHTML = "<b>Wind: </b> " + toDirection(response.current.wind_deg) + " " + response.current.wind_speed + " km/h";
-    if(response.alerts[0].description != null){
-        document.getElementById("description").innerHTML = '<b>Beschreibung: </b><br>' + response.alerts[0].description;
-        document.getElementById("source").innerHTML = "<b>Quelle: </b>" + response.alerts[0].sender_name;
+function isPointInPoly(plgn, pnt)
+{
+    var x = pnt[0], y = pnt[1]
+    
+    var inside = false
+    for (var i = 0, j = plgn.length - 1; i < plgn.length; j = i++) {
+        var xi = plgn[i][0], yi = plgn[i][1]
+        var xj = plgn[j][0], yj = plgn[j][1]
+        
+        var intersect = ((yi > y) != (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)
+        if (intersect) inside = !inside;
     }
+    
+    return inside;
 }
 
 /**
-*@function {main} main function to handle Request generation and Response handling
-*@param {}
-*@returns {} 
-*/
-function main(){
-    if(clientAPIKey != undefined){ //if an API-Key is given
-        iniatializeAPI(clientAPIKey, result); //generate Request
-    } 
-    else {
-         console.log("clientAPIKey id undefined. Enter APIKey"); //log error message to console
-         return;
+ * @function getBorderOfSubsection - Function that calculates the point, where a sequence crosses the polygon
+ * @param {JSONConstructor} polygon - Represents the polygon we are working with
+ * @param {JSONConstructor} route - Represents the route we are checking out
+ * @param {int} counter - The counter counts the amount of coordinates which were added to the array of subsequences 
+ * @param {[[double,double],[double,double],...,[double,dousble]]} subsection - Represents a subsection which lays 
+ * either inside the polygon or outside
+ * @param {int} i - This iterator is needed to keep in memory for the position in the route
+ * @returns counter - The counter value gets changed in this function so it gets returned
+ */
+ function getBorderOfSubsection(polygon, route, i){ 
+    var crossPointDist = new Array() // will contain all distances from the last point outside the polygon to all segments of the polygon
+    for(var j=0; j<polygon.length-1; j++){
+        crossPointDist[j] = intersect([route.features[0].geometry.coordinates[0][i-1], route.features[0].geometry.coordinates[0][i]],
+                                      [polygon[j], polygon[j+1]]) //corrected
     }
-    loadOpenWeather(api); //fetch results from OpenWeater and print them o canvas
-    //console.log(result);
-}
-
-//set of degrees with corresponding cardinal direction
-//source: http://www.sternwarte-eberfing.de/Aktuell/Himmelsrichtung.html (degree classifications)
-var degreesList = [[22.5,"N"],[67.5,"NE"],[112.5,"E"],[157.5,"SE"],[202.5,"S"],[247.5,"SW"],[292.5,"W"],[337.5,"NW"],[360.0,"N"]];
-
-/**
-*@function {toDirection} Function to convert bearing from degree to string
-*@param {double} degrees
-*@returns {String} returns bearing as a string
-*/
-function toDirection(degrees){
-	for(var i=0; i<degreesList.length; i++){
-		if(degrees<degreesList[i][0]) {
-            return degreesList[i][1];
+    crossPointDist[polygon.length] = intersect([route.features[0].geometry.coordinates[0][i-1], route.features[0].geometry.coordinates[0][i]], [polygon[polygon.length-1],polygon[0]])
+    for(j=0; j<crossPointDist.length; j++){
+        if(crossPointDist[j]!= null) {
+            crossPointDist[j] = [crossPointDist[j],calculateDistance(crossPointDist[j],route.features[0].geometry.coordinates[0][i-1])]
         }
-	}
+        else crossPointDist[j] = [crossPointDist[j],999999999]
+    }
+    crossPointDist.sort(function([a,b],[c,d]){ return b-d }) // sort the array to get rthe nearest intersection
+    
+    var marker = new L.marker([crossPointDist[0][0][1], crossPointDist[0][0][0]]).addTo(map)
+    return crossPointDist[0][0] // adds the nearest intersection-point to the subsection-array   
+}  
+/**
+ * 
+ */
+ function turnAroundCoords(coords){
+    var result  = []
+    result[0] = coords[1]
+    result[1] = coords[0]
+    return result
 }
 
+var polygon 
 /**
-*@function {submit} Function to genrate the output, checks if the API-Key is set
-*@returns {} prints results to canvas
-*/
-function submit(){
-    getAPIKey(); //get the API-Key
-    if(clientAPIKey==""){ //if no API-Key is set
-        document.getElementById("timezone").innerHTML = "Der API-Key fehlt"; //print error message to canvas
-        document.getElementById("temp").innerHTML = "";
-        document.getElementById("feels_like").innerHTML = "";
-        document.getElementById("humidity").innerHTML = "";
-        document.getElementById("pressure").innerHTML = "";
-        document.getElementById("wind").innerHTML = "";
-        return; //break
+ * Transform rectangle from JSON to array
+ * @param {JSON} rectangle 
+ */
+function rectangleToPolygon(rectangle){
+    polygon = []
+    for(var i=0; i<rectangle[0].length; i++){
+        polygon[i] = [rectangle[0][i].lng, rectangle[0][i].lat]
     }
-    main(); //else send request
 }
+
+// some arrays, which are needed for the following calculation 
+let pointsInsideOfPoly
+let pointsOutsideOfPoly
+var route
+/**
+ * @function mainCalculation - Recognizes all points from route which are inside of the polygon and those, 
+ * which are laying outside. Then also calculates the point where the line crosses the polygon
+ * @param {JSON} route - Enter an LineString-(Geo)JSON
+ */
+function mainCalculation(route){
+    // some variables, which are needed for the following calculation  
+    pointsInsideOfPoly = new Array()
+    pointsOutsideOfPoly = new Array() 
+    let pointsOutsideOfPolyLength = 0
+    let pointsInsideOfPolyLength = 0
+    let counter = 0
+
+    rectangleToPolygon(rectangle)
+
+    for(var i=0; i<route.features[0].geometry.coordinates[0].length-1; i++){
+
+        if(isPointInPoly(polygon, route.features[0].geometry.coordinates[0][i]) == false){  // changed 
+            var subsection = new Array()
+            counter = 0
+            // Checks whether the coordinate is the first in the given array.
+            // If it would be, the "getBorderOfSubsection"-algorithm would not work
+            if(i!=0){
+                // Calculates the intersection
+                subsection[counter] = getBorderOfSubsection(polygon, route, i)
+                counter++
+            }
+            subsection[counter] = route.features[0].geometry.coordinates[0][i]
+            i++
+            counter++
+            while(isPointInPoly(polygon, route.features[0].geometry.coordinates[0][i]) == false){
+                subsection[counter] = route.features[0].geometry.coordinates[0][i]
+                if(i<route.features[0].geometry.coordinates[0].length-1) i++
+                else break
+                counter++
+            }
+            // Calculates the intersection
+            subsection[counter] = getBorderOfSubsection(polygon, route, i)
+            counter++
+            if(i>=route.features[0].geometry.coordinates[0].length) break
+            pointsOutsideOfPoly[pointsOutsideOfPolyLength] = subsection
+            pointsOutsideOfPolyLength+
+            i--
+        } else { // points inside of polygon: isPointInPoly(polygon, route.coordinates[i]) == true)
+            var subsection = new Array()
+            counter = 0
+            // Checks whether the coordinate is the first in the given array.
+            // If it would be, the "getBorderOfSubsection"-algorithm would not work       
+            if(i!=0){
+                subsection[counter] = getBorderOfSubsection(polygon, route, i)
+                counter++
+            }
+            subsection[counter] = route.features[0].geometry.coordinates[0][i] // correct coordinate    
+            i++
+            counter++
+            while(isPointInPoly(polygon, route.features[0].geometry.coordinates[0][i]) == true){ // correct
+                subsection[counter] = route.features[0].geometry.coordinates[0][i] // correct
+                if(i<route.features[0].geometry.coordinates[0].length-1) i++
+                else break
+                counter++
+            }
+            // Calculates the intersection
+            subsection[counter] = getBorderOfSubsection(polygon, route, i)
+            counter++
+            if(i>=route.features[0].geometry.coordinates[0].length) break
+            pointsInsideOfPoly[pointsInsideOfPolyLength] = subsection
+            pointsInsideOfPolyLength++
+            i--
+        }
+    } 
+}
+
+// Set map 
+var map = L.map('map').setView([51.975, 7.61], 13) 
+
+// add an OpenStreetMap tile layer and keep reference in variable
+var osmLayer = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+	{attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map)
+
+var geodata = L.geoJson(routeJson)
+
+geodata.bindPopup(routeJson.features[0].properties.name).addTo(map)
+
+var drawnItems = new L.FeatureGroup()
+map.addLayer(drawnItems)
+
+var drawControl = new L.Control.Draw({
+    draw:{
+        marker: true,
+        polyline: false,
+        circle: false,
+        circlemarker: false,
+        polygon: false,
+        rectangle: {
+            showArea: true,
+            metric: true,
+            drawError: 'orange'
+        }
+    },
+    edit: {
+        featureGroup: drawnItems
+    }
+})
+
+map.addControl(drawControl)
+
+// Show the drawn rectangle on the map and save the coordinates of the rectagle as variable 'rectangle'
+let rectangle
+map.on('draw:created', function (e){
+    var type = e.layerType, layer = e.layer
+    if(type === 'marker'){
+        layer.bindPopup('A popup!')
+    }
+    rectangle = layer.getLatLngs()
+    drawnItems.addLayer(layer)
+    console.log(rectangle)
+    mainCalculation(routeJson)
+})
+
+var popup = L.popup();
 

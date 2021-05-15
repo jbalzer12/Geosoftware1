@@ -227,7 +227,7 @@ function isPointInPoly(plgn, pnt)
  * @param {int} i - This iterator is needed to keep in memory for the position in the route
  * @returns counter - The counter value gets changed in this function so it gets returned
  */
- function getBorderOfSubsection(polygon, route, counter, subsection, i){
+function getBorderOfSubsection(polygon, route, i){
     var crossPointDist = new Array() // will contain all distances from the last point outside the polygon to all segments of the polygon
 
     for(var j=0; j<polygon.coordinates.length-1; j++){
@@ -240,9 +240,7 @@ function isPointInPoly(plgn, pnt)
         else crossPointDist[j] = [crossPointDist[j],999999999]
     }
     crossPointDist.sort(function([a,b],[c,d]){return b-d}) // sort the array to get rthe nearest intersection
-    subsection[counter] = crossPointDist[0][0] // adds the nearest intersection-point to the subsection-array
-    counter++
-    return counter
+    return crossPointDist[0][0] 
 }  
 
 // some arrays, which are needed for the following calculation 
@@ -269,7 +267,8 @@ function mainCalculation(route){
             // If it would be, the "getBorderOfSubsection"-algorithm would not work
             if(i!=0){
                 // Calculates the intersection
-                counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
+                subsection[counter] = getBorderOfSubsection(polygon, route, i)
+                counter++
             }
             subsection[counter] = route.coordinates[i]
             i++
@@ -281,7 +280,8 @@ function mainCalculation(route){
                 counter++
             }
             // Calculates the intersection
-            counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
+            subsection[counter] = getBorderOfSubsection(polygon, route, i)
+            counter++
             if(i>=route.coordinates.length) break
             pointsOutsideOfPoly[pointsOutsideOfPolyLength] = subsection
             pointsOutsideOfPolyLength++
@@ -294,7 +294,8 @@ function mainCalculation(route){
             // If it would be, the "getBorderOfSubsection"-algorithm would not work
            if(i!=0){
                 // Calculates the intersection
-                counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
+                subsection[counter] = getBorderOfSubsection(polygon, route, i)
+                counter++
             }
             subsection[counter] = route.coordinates[i]
             i++
@@ -306,7 +307,8 @@ function mainCalculation(route){
                 counter++
             }
             // Calculates the intersection
-            counter = getBorderOfSubsection(polygon, route, counter, subsection, i)
+            subsection[counter] = getBorderOfSubsection(polygon, route, i)
+            counter++
             if(i>=route.coordinates.length) break
             pointsInsideOfPoly[pointsInsideOfPolyLength] = subsection
             pointsInsideOfPolyLength++
