@@ -1,5 +1,5 @@
 "use strict"
-// ------------------------ Everything neede for the weather api request ----------------------------
+// ------------------------ Everything needed for the weather api request ----------------------------
 
 // The API gets stored in this variable.
 var api;
@@ -16,41 +16,19 @@ function iniatializeAPI(key, coordinates){
 }
 
 //variable to store the API-Key
-var clientAPIKey;
-
+var clientAPIKey
 /**
 * @function {} - reads the API-Key from Input-Field
 * and the geolocatization is not possible.
 */
 function getAPIKey(){
-    clientAPIKey = document.getElementById("apiField").value; //retrieve API-Key
+    clientAPIKey = document.getElementById("apiField").value //retrieve API-Key
 }
 
-//variable to store the response
-var response;
+//variable to store the response of api request (used later)
+var response
 
-/**
-*@function {loadOpenWeather} fetches results and prints them to the canvas
-*@param {api} complete api request
-*@returns {} 
-*/
-async function loadOpenWeather(api) {
-    let res = await fetch(api); //fetch results
-    response = await res.json(); //get result as json
-    //fill the html with information from the response
-    document.getElementById("timezone").innerHTML = "<b>Zeitzone: </b>" + response.timezone;
-    document.getElementById("temp").innerHTML = "<b>Temperatur: </b>" + response.current.temp + " °C";
-    document.getElementById("feels_like").innerHTML = "<b>Gefühlte Temperatur: </b>" + response.current.feels_like + " °C";
-    document.getElementById("humidity").innerHTML = "<b>Luftfeuchtigkeit: </b>" + response.current.humidity + " %";
-    document.getElementById("pressure").innerHTML = "<b>Luftdruck: </b>" + response.current.pressure + " hPa";
-    document.getElementById("wind").innerHTML = "<b>Wind: </b> " + toDirection(response.current.wind_deg) + " " + response.current.wind_speed + " km/h";
-    if(response.alerts[0].description != null){
-        document.getElementById("description").innerHTML = '<b>Beschreibung: </b><br>' + response.alerts[0].description;
-        document.getElementById("source").innerHTML = "<b>Quelle: </b>" + response.alerts[0].sender_name;
-    }
-}
-
-// ------------------------ Everything neede for the intersection calculation ----------------------------
+// ------------------------ Everything needed for the intersection calculation ----------------------------
 
 // This constant is the mean earth radius
 const R = 6371 
@@ -160,7 +138,7 @@ function pointOnLine(line, pnt)
 * @returns intersectionPoint - That is the coordinate the sequences cross
 * source: https://www.movable-type.co.uk/scripts/latlong.html
 */
-function intersect(segment1, segment2) // works 
+function intersect(segment1, segment2) 
 {
     var coord11 = segment1[0]
     var lat11 = coord11[0]; var lon11 = coord11[1]
@@ -180,7 +158,6 @@ function intersect(segment1, segment2) // works
     var gamma12 = 2 * Math.asin(Math.sqrt(Math.sin(dphi/2) * Math.sin(dphi/2)
         + Math.cos(phi1) * Math.cos(phi2) * Math.sin(dlambda/2) * Math.sin(dlambda/2)))
     if (Math.abs(gamma12) < Number.EPSILON) {
-        //console.log("Coincident points")
         return  [phi1, phi2]
     }
  
@@ -205,12 +182,10 @@ function intersect(segment1, segment2) // works
 
     // If this case gets entered, it exists infinite solutions
     if(Math.sin(alpha1) == 0 && Math.sin(alpha2) == 0) {
-        //console.log("infinite solutions") 
         return null
     }
     // If this case gets entered, it exists ambitious solutions
     if(Math.sin(alpha1) * Math.sin(alpha2) < 0) {
-        //console.log("ambitious solutions") 
         return null
     }
 
@@ -240,19 +215,49 @@ function intersect(segment1, segment2) // works
 function isPointInPoly(plgn, pnt)
 {
     var x = pnt[0], y = pnt[1]
-    
     var inside = false
     for (var i = 0, j = plgn.length - 1; i < plgn.length; j = i++) {
         var xi = plgn[i][0], yi = plgn[i][1]
         var xj = plgn[j][0], yj = plgn[j][1]
-        
         var intersect = ((yi > y) != (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)
         if (intersect) inside = !inside;
     }
-    
     return inside;
 }
-
+//set of degrees with corresponding cardinal direction
+//source: http://www.sternwarte-eberfing.de/Aktuell/Himmelsrichtung.html (degree classifications)
+var degreesList = [[22.5,"N"],[67.5,"NE"],[112.5,"E"],[157.5,"SE"],[202.5,"S"],[247.5,"SW"],[292.5,"W"],[337.5,"NW"],[360.0,"N"]]
+/**
+*@function {toDirection} Function to convert bearing from degree to string
+*@param {double} degrees
+*@returns {String} returns bearing as a string
+*/
+function toDirection(degrees){
+	for(var i=0; i<degreesList.length; i++){
+		if(degrees<degreesList[i][0]) {
+            return degreesList[i][1]
+        }
+	}
+}
+/**
+ * @function initializePopup - Initializes the popup by sending an ajax-request 
+ * @param {marker} marker - Marker where a popup should be initialized
+ * @param {[double, double]} coordinates - Coordinates of the point the popup should be build up
+ */
+function initializePopup(marker, coordinates){
+    response = null
+    getAPIKey() // Get the api-key by the user
+    iniatializeAPI(clientAPIKey, coordinates) // Builds up the api
+    $.ajax(api) // Send request for whether information
+        .done(function(response){ // If request successes
+            marker.bindPopup("<b>Temperatur: </b>" + response.current.temp + " °C<br><b>Luftfeuchtigkeit: </b>" + response.current.humidity + " %<br><b>Luftdruck: </b>" + response.current.pressure + " hPa<br><b>Wind: </b> " + toDirection(response.current.wind_deg) + " " + response.current.wind_speed + " km/h")
+            marker.openPopup()
+        })
+        .fail(function(xhr, status, error){ // In case there is no api-key e.g.
+            marker.bindPopup("Um das Wetter abzufragen zunächst eine API-Key eingeben!")
+            marker.openPopup()
+        })
+}
 /**
  * @function getBorderOfSubsection - Function that calculates the point, where a sequence crosses the polygon
  * @param {JSONConstructor} polygon - Represents the polygon we are working with
@@ -266,28 +271,27 @@ function isPointInPoly(plgn, pnt)
  function getBorderOfSubsection(polygon, route, i){ 
     var crossPointDist = new Array() // will contain all distances from the last point outside the polygon to all segments of the polygon
     for(var j=0; j<polygon.length-1; j++){
-        crossPointDist[j] = intersect([route.features[0].geometry.coordinates[0][i-1], route.features[0].geometry.coordinates[0][i]],
-                                      [polygon[j], polygon[j+1]]) //corrected
+        // Calculate the intersection points with every site of the polygon
+        crossPointDist[j] = intersect([route.features[0].geometry.coordinates[0][i-1], route.features[0].geometry.coordinates[0][i]], [polygon[j], polygon[j+1]]) 
+        
     }
     crossPointDist[polygon.length] = intersect([route.features[0].geometry.coordinates[0][i-1], route.features[0].geometry.coordinates[0][i]], [polygon[polygon.length-1],polygon[0]])
+    // Calculate the distance between every intersection-point and last point in- or outside if the polygon to get the nearest intersection-point
     for(j=0; j<crossPointDist.length; j++){
         if(crossPointDist[j]!= null) {
+            //var marker = new L.marker(turnAroundCoords(crossPointDist[j])).addTo(map)
             crossPointDist[j] = [crossPointDist[j],calculateDistance(crossPointDist[j],route.features[0].geometry.coordinates[0][i-1])]
         }
         else crossPointDist[j] = [crossPointDist[j],999999999]
     }
     crossPointDist.sort(function([a,b],[c,d]){ return b-d }) // sort the array to get rthe nearest intersection
-    // Marks the intersection on the map
-    if(i!=route.features[0].geometry.coordinates[0].length-1){
-        var marker = new L.marker([crossPointDist[0][0][1], crossPointDist[0][0][0]]).addTo(map)
-        marker.bindPopup("test"+i)
-        marker.openPopup()
-    }
-    
     return crossPointDist[0][0] // adds the nearest intersection-point to the subsection-array   
 }  
+
 /**
- * 
+ * @function turnAroundCoords - Switches long- and latitude of the coordinates
+ * @param {[double, duoble]} coords - Coordinates where latitude and longitude should be switched
+ * @return The coordinates with switched lat and lon get returned
  */
  function turnAroundCoords(coords){
     var result  = []
@@ -299,13 +303,23 @@ function isPointInPoly(plgn, pnt)
 var polygon 
 /**
  * Transform rectangle from JSON to array
- * @param {JSON} rectangle 
+ * @function rectangleToPolygon - Transform retangle in form of json to an array
+ * @param {JSON} rectangle - 4 Coordinates that form a retangle 
  */
 function rectangleToPolygon(rectangle){
     polygon = []
     for(var i=0; i<rectangle[0].length; i++){
         polygon[i] = [rectangle[0][i].lng, rectangle[0][i].lat]
     }
+}
+/**
+ * @function addInteresectionMarker - Builds a marker and places him at the given coordinates. The function also initializes a popup and adds it to map as well.
+ * @param {*} coords - Coordinates, where the marker should be placed.
+ */
+function addInteresectionMarker(coords){
+    var marker = new L.marker(turnAroundCoords(coords)).addTo(map)
+    drawnItems.addLayer(marker) // Adds the marker to the drawnItems-FeatureGroup to make it possible to remove them by actuating the remove-button on the control bar
+    initializePopup(marker, coords) // Initialize the popup and send the request per jquery
 }
 
 // some arrays, which are needed for the following calculation 
@@ -325,11 +339,11 @@ function mainCalculation(route){
     let pointsInsideOfPolyLength = 0
     let counter = 0
 
-    rectangleToPolygon(rectangle)
+    rectangleToPolygon(rectangle) // Transform the rectangle to a polygon-array
 
     for(var i=0; i<route.features[0].geometry.coordinates[0].length-1; i++){
 
-        if(isPointInPoly(polygon, route.features[0].geometry.coordinates[0][i]) == false){  // changed 
+        if(isPointInPoly(polygon, route.features[0].geometry.coordinates[0][i]) == false){  
             var subsection = new Array()
             counter = 0
             // Checks whether the coordinate is the first in the given array.
@@ -362,19 +376,48 @@ function mainCalculation(route){
             // If it would be, the "getBorderOfSubsection"-algorithm would not work       
             if(i!=0){
                 subsection[counter] = getBorderOfSubsection(polygon, route, i)
+                // Marks the intersection on the map
+                // ADDITION FOR TASK 4 -----------------
+                // Because of minimal inaccuracy at the calculation of the intersection the intersect-algorithm sometimes does not find the correct intersection point. 
+                // In that case it defines an other, incorrect point as intersection. In these cases the algorithm chooses the position of the last point 
+                // in- or outside of the polygon as intersection point. As threshold the algorithm uses 1 km as distance. In this case it is possible that an intersection might not be calculatet by the algorithm.
+                if(calculateDistance(subsection[counter], route.features[0].geometry.coordinates[0][i]) > 1){ // Größer 1 km
+                    if(i!=route.features[0].geometry.coordinates[0].length-1){
+                        addInteresectionMarker(route.features[0].geometry.coordinates[0][i]) 
+                    }
+                } else{
+                    if(i!=route.features[0].geometry.coordinates[0].length-1){
+                        addInteresectionMarker(subsection[counter]) 
+                    }
+                }
                 counter++
             }
-            subsection[counter] = route.features[0].geometry.coordinates[0][i] // correct coordinate    
+            subsection[counter] = route.features[0].geometry.coordinates[0][i]   
             i++
             counter++
-            while(isPointInPoly(polygon, route.features[0].geometry.coordinates[0][i]) == true){ // correct
-                subsection[counter] = route.features[0].geometry.coordinates[0][i] // correct
+            while(isPointInPoly(polygon, route.features[0].geometry.coordinates[0][i]) == true){ 
+                subsection[counter] = route.features[0].geometry.coordinates[0][i] 
                 if(i<route.features[0].geometry.coordinates[0].length-1) i++
                 else break
                 counter++
             }
             // Calculates the intersection
             subsection[counter] = getBorderOfSubsection(polygon, route, i)
+            // Marks the intersection on the map
+            // ADDITION FOR TASK 4 -----------------
+            // Because of minimal inaccuracy at the calculation of the intersection the intersect-algorithm sometimes does not find the correct intersection point. 
+            // In that case it defines an other, incorrect point as intersection. In these cases the algorithm chooses the position of the last point 
+            // in- or outside of the polygon as intersection point. As threshold the algorithm uses 1 km as distance. In this case it is possible that an intersection might not be calculatet by the algorithm.
+            if(calculateDistance(subsection[counter], route.features[0].geometry.coordinates[0][i]) > 1){ 
+                if(i!=route.features[0].geometry.coordinates[0].length-1){
+                    addInteresectionMarker(route.features[0].geometry.coordinates[0][i]) 
+                    }
+            } else{
+                if(i!=route.features[0].geometry.coordinates[0].length-1){
+                    addInteresectionMarker(subsection[counter]) 
+                }
+            }
+            
             counter++
             if(i>=route.features[0].geometry.coordinates[0].length) break
             pointsInsideOfPoly[pointsInsideOfPolyLength] = subsection
@@ -384,25 +427,27 @@ function mainCalculation(route){
     } 
 }
 
-// ------------------------ Everything neede for the leaflet map ----------------------------
+// ------------------------ Everything needed for the leaflet map ----------------------------
 
 // Set map 
 var map = L.map('map').setView([51.975, 7.61], 13) 
 
-// add an OpenStreetMap tile layer and keep reference in variable
+// Add an OpenStreetMap tile layer and keep reference in variable
 var osmLayer = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
 	{attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map)
 
+// Adds the given route to the map
 var geodata = L.geoJson(routeJson)
-
+// Names the route for a popup
 geodata.bindPopup(routeJson.features[0].properties.name).addTo(map)
-
+// Initializes "FaetureGroup"-object for the drawn elements
 var drawnItems = new L.FeatureGroup()
+// Adds drawn elements to the map
 map.addLayer(drawnItems)
-
+// Builds draw-control with everything, except the rectangle, deactivated
 var drawControl = new L.Control.Draw({
     draw:{
-        marker: true,
+        marker: false,
         polyline: false,
         circle: false,
         circlemarker: false,
@@ -414,20 +459,18 @@ var drawControl = new L.Control.Draw({
         }
     },
     edit: {
-        featureGroup: drawnItems
+        featureGroup: drawnItems, // Says that everything that gets drawn gets added to this FeatureGroup
+        remove: true
     }
 })
-
+// Adds the control-element
 map.addControl(drawControl)
 
-// Show the drawn rectangle on the map and save the coordinates of the rectagle as variable 'rectangle'
+// Shows the drawn rectangle on the map and save the coordinates of the rectagle as variable 'rectangle'
 let rectangle
 map.on('draw:created', function (e){
     var type = e.layerType, layer = e.layer
     rectangle = layer.getLatLngs()
     drawnItems.addLayer(layer)
-    console.log(rectangle)
     mainCalculation(routeJson)
 })
-
-var popup = L.popup();
