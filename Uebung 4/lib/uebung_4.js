@@ -384,10 +384,13 @@ function mainCalculation(route){
                 if(calculateDistance(subsection[counter], route.features[0].geometry.coordinates[0][i]) > 1){ // Größer 1 km
                     if(i!=route.features[0].geometry.coordinates[0].length-1){
                         addInteresectionMarker(route.features[0].geometry.coordinates[0][i]) 
+                        console.log(i)
                     }
                 } else{
                     if(i!=route.features[0].geometry.coordinates[0].length-1){
                         addInteresectionMarker(subsection[counter]) 
+                        console.log(i)
+
                     }
                 }
                 counter++
@@ -411,10 +414,14 @@ function mainCalculation(route){
             if(calculateDistance(subsection[counter], route.features[0].geometry.coordinates[0][i]) > 1){ 
                 if(i!=route.features[0].geometry.coordinates[0].length-1){
                     addInteresectionMarker(route.features[0].geometry.coordinates[0][i]) 
+                    console.log(i)
+
                     }
             } else{
                 if(i!=route.features[0].geometry.coordinates[0].length-1){
                     addInteresectionMarker(subsection[counter]) 
+                    console.log(i)
+
                 }
             }
             
