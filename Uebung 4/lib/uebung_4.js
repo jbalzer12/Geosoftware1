@@ -383,13 +383,13 @@ function mainCalculation(route){
                 // in- or outside of the polygon as intersection point. As threshold the algorithm uses 1 km as distance. In this case it is possible that an intersection might not be calculatet by the algorithm.
                 if(calculateDistance(subsection[counter], route.features[0].geometry.coordinates[0][i]) > 1){ // Größer 1 km
                     if(i!=route.features[0].geometry.coordinates[0].length-1){
-                        addInteresectionMarker(route.features[0].geometry.coordinates[0][i]) 
-                        console.log(i)
+                        addInteresectionMarker(route.features[0].geometry.coordinates[0][i])
+                        console.log("route.features[0].geometry.coordinates[0][i]: <b>"+route.features[0].geometry.coordinates[0][i]+", i: "+i) 
                     }
                 } else{
                     if(i!=route.features[0].geometry.coordinates[0].length-1){
                         addInteresectionMarker(subsection[counter]) 
-                        console.log(i)
+                        console.log("subsection[marker]: <b>"+route.features[0].geometry.coordinates[0][i]+", i: "+i) 
 
                     }
                 }
@@ -414,13 +414,13 @@ function mainCalculation(route){
             if(calculateDistance(subsection[counter], route.features[0].geometry.coordinates[0][i]) > 1){ 
                 if(i!=route.features[0].geometry.coordinates[0].length-1){
                     addInteresectionMarker(route.features[0].geometry.coordinates[0][i]) 
-                    console.log(i)
+                    console.log("route.features[0].geometry.coordinates[0][i]: <b>"+route.features[0].geometry.coordinates[0][i]+", i: "+i) 
 
                     }
             } else{
                 if(i!=route.features[0].geometry.coordinates[0].length-1){
                     addInteresectionMarker(subsection[counter]) 
-                    console.log(i)
+                    console.log("subsection[counter]: <b>"+route.features[0].geometry.coordinates[0][i]+", i: "+i) 
 
                 }
             }
