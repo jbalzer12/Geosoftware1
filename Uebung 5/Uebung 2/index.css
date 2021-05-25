@@ -1,8 +1,16 @@
 /* Task 2 */
+
 h1, p, table, div{
     font-family: Tahoma, Verdana, sans-serif;
 }
-table {
+#bg-head{
+    background-color: rgb(34,37,41);
+    padding-top: 20px;
+}
+#subtitle{
+    font-size: 20px;
+}
+table{
     font-family: Tahoma, Verdana, sans-serif;
     border-collapse: collapse;
     width: 100%;
@@ -36,9 +44,7 @@ tr:nth-child(even) {
     height: 200 px;
     font-size: 18px;
 }
-body{
-    padding: 20px;
-}
+
 #input{
     font-family: Tahoma, Verdana, sans-serif;
     width: 49%;

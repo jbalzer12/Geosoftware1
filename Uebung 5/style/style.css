@@ -1,18 +1,11 @@
 /* Task 5 */ 
 
-body{
-    background-color: rgb(48, 46, 43);  
-}
-
 h1, p, table, div, a{
     font-family: Tahoma, Verdana, sans-serif;
 }
-#title{
-    padding-top: 20px;
-}
-#title, #subtitle{
-    color: white;
-    padding-left: 20px;
+#bg-head{
+    background-color: rgb(34,37,41); 
+    padding-top: 20px; 
 }
 #subtitle{
     font-size: 20px;
