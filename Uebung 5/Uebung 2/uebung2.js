@@ -401,15 +401,19 @@ var linestring
  * Then it the main-method gets called with the new route.
  */
 function getInputValue(){
+    document.getElementById("errorMessage").className = ""
     document.getElementById("errorMessage").innerHTML = ""
+
     if(isValid(document.getElementById("input").value) == true){ // Checks whether the input is valid
         if((JSON.parse(document.getElementById("input").value)).type != "LineString"){
+            document.getElementById("errorMessage").className = "alert alert-warning"
             document.getElementById("errorMessage").innerHTML = 'ERROR: This is not a LineString. Expected pattern: {"type":"LineString","coordinates":[...]}'
         } else{
             linestring = JSON.parse(document.getElementById("input").value)
             main(linestring)
         }
     } else { // Throws an error if not
+        document.getElementById("errorMessage").className = "alert alert-warning"
         document.getElementById("errorMessage").innerHTML = "ERROR: This is not a valid GeoJSON"
     }
 }
@@ -440,14 +444,19 @@ uploadfield.addEventListener('change', async function(){
         await Sleep(500) // wait 0.5 seconds until the result is loaded
     } else return
     document.getElementById("errorMessage2").innerHTML = ""
-    console.log(reader.result)
+    document.getElementById("errorMessage2").className = ""
     if(isValid(reader.result) == true){
         if((JSON.parse(reader.result)).type == "LineString"){
             document.getElementById("uploadButton").disabled = false
         }
-        else document.getElementById("errorMessage2").innerHTML = 'ERROR: This is not a LineString. Expected pattern: {"type":"LineString","coordinates":[...]}'
-    } else document.getElementById("errorMessage2").innerHTML = "ERROR: This is not a valid GeoJSON" // Throws an error if not
- 
+        else {
+            document.getElementById("errorMessage2").className = "alert alert-warning"
+            document.getElementById("errorMessage2").innerHTML = 'ERROR: This is not a LineString. Expected pattern: {"type":"LineString","coordinates":[...]}'
+        }
+    } else {
+        document.getElementById("errorMessage2").className = "alert alert-warning"
+        document.getElementById("errorMessage2").innerHTML = "ERROR: This is not a valid GeoJSON" // Throws an error if not
+    }
 })
 /**
  * @function {getFile} - This functin gets calles in case a user wants to use his/her uploaded .json file.
@@ -455,6 +464,7 @@ uploadfield.addEventListener('change', async function(){
  */
 function getFile(){
     document.getElementById("errorMessage2").innerHTML = ""
+    document.getElementById("errorMessage2").className = ""
     linestring = JSON.parse(reader.result)
     main(linestring)
 }
