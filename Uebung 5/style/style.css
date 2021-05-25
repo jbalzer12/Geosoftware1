@@ -1,0 +1,23 @@
+/* Task 5 */ 
+
+h1, p, table, div, a{
+    font-family: Tahoma, Verdana, sans-serif;
+}
+#bg-head{
+    padding-top: 20px; 
+    background-color: rgb(34,37,41); 
+}
+#subtitle{
+    font-size: 20px;
+}
+#map { 
+    height: 610px; 
+}
+#apiField{
+    width: 250px;
+}
+@media screen and (min-width: 992px) {
+    #album py-5 bg-light{
+        height: 100%;
+    }    
+}

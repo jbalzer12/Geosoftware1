@@ -461,7 +461,8 @@ var drawControl = new L.Control.Draw({
         polygon: false,
         rectangle: {
             showArea: true,
-            metric: ['km','m']
+            metric: ['km', 'm'],
+            drawError: 'orange'
         }
     },
     edit: {
