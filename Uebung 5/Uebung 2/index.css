@@ -10,6 +10,7 @@ h1, p, table, div{
 #subtitle{
     font-size: 20px;
 }
+/*
 table{
     font-family: Tahoma, Verdana, sans-serif;
     border-collapse: collapse;
@@ -38,6 +39,7 @@ tr{
 tr:nth-child(even) {
     background-color: #dcecec;
 }
+*/
 #finalSum, #routeHeading{
     padding-top: 20px;
     padding-bottom: 20px;

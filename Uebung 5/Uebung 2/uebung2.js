@@ -477,11 +477,11 @@ function main(routeForCalc){
 
     // Clears the table before filling it (needed in case it is already filled up)
     clearTable()
-
+    /*
     // some constants to build up a table for the HTML-webpage
     const table = document.getElementById("table")
-    const hrow = document.createElement("tr")
-    table.appendChild(hrow)
+    const thead = document.createElement("tr")
+    table.appendChild(thead)
 
     var listCaptions = [" Distance (in km) ", " Start coordinate ", "End coordinate "]
     // Now the first line with the headings gets build up 
@@ -489,7 +489,7 @@ function main(routeForCalc){
         const th = document.createElement("th")
         const thtext = document.createTextNode(caption)
         th.appendChild(thtext)
-        hrow.appendChild(th)
+        thead.appendChild(th)
     }
 
     // Now the table gets filled up with all the values from the relevant-data-array
@@ -504,7 +504,38 @@ function main(routeForCalc){
             drow.appendChild(td)
         } 
     }
+*/
+    // some constants to build up a table for the HTML-webpage
+    const table = document.getElementById("table")
+    const thead = document.createElement("thead")
+    const tr = document.createElement("tr")
+    table.appendChild(thead)
+    thead.appendChild(tr)
 
+    var listCaptions = [" Distance (in km) ", " Start coordinate ", "End coordinate "]
+    // Now the first line with the headings gets build up 
+    for(let caption of listCaptions){
+        const th = document.createElement("th")
+        th.scope = "col"
+        th.innerHTML = caption
+        tr.appendChild(th)
+    }
+
+    const tbody = document.createElement("tbody")
+    table.appendChild(tbody)
+
+    // Now the table gets filled up with all the values from the relevant-data-array
+    for(let distance of distances){
+        const tr = document.createElement("tr")
+        tbody.appendChild(tr)
+        
+        for(let elements of distance){
+            const td = document.createElement("td")
+            //const thtext = document.createTextNode(elements)
+            td.innerHTML = elements
+            tr.appendChild(td)
+        } 
+    }
     // And also the final lenght of the route gets calucalated.
     // But here the know coordinates (also the intersection-coordinates) get used
     // So the value might be a little bit different from the original length of the route
