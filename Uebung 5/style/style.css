@@ -4,8 +4,8 @@ h1, p, table, div, a{
     font-family: Tahoma, Verdana, sans-serif;
 }
 #bg-head{
-    background-color: rgb(34,37,41); 
     padding-top: 20px; 
+    background-color: rgb(34,37,41); 
 }
 #subtitle{
     font-size: 20px;

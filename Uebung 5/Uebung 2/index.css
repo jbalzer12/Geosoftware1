@@ -33,15 +33,7 @@ h1, p, table, div{
     width: 49%;
     height: 300px;
 }
-.button{
-    background-color: #6e9aa0cb; 
-    width: 49%; 
-    color: black;
-    border: none;
-    padding: 15px 32px;
-    font-size: 18px;
-    border: 5px solid white
-}
+
 #polygon{
     font-family: Tahoma, Verdana, sans-serif;
     width: 98%;
