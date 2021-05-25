@@ -1,0 +1,12 @@
+h1, p, table, div, a{
+    font-family: Tahoma, Verdana, sans-serif;
+}
+#subtitle{
+    font-size: 20px;
+}
+#map { 
+    height: 610px; 
+}
+#apiField{
+    width: 250px;
+}

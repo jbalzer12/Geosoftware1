@@ -1,0 +1,25 @@
+/* Task 5 */ 
+
+body{
+    background-color: rgb(48, 46, 43);  
+}
+
+h1, p, table, div, a{
+    font-family: Tahoma, Verdana, sans-serif;
+}
+#title{
+    padding-top: 20px;
+}
+#title, #subtitle{
+    color: white;
+    padding-left: 20px;
+}
+#subtitle{
+    font-size: 20px;
+}
+#map { 
+    height: 610px; 
+}
+#apiField{
+    width: 250px;
+}
