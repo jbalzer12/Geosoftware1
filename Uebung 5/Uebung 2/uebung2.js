@@ -422,15 +422,32 @@ function useStandard(){
     linestring = route
     main(linestring)
 }
+/**
+ * @function Sleep - The function is a simpler expression for setTimeout. If it gets called the program stops and waits for the duration of milliseconds.
+ * @param {Integer} milliseconds 
+ */
+function Sleep(milliseconds) {
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
 
 let uploadfield = document.getElementById("uploadfield")
 var reader
 // When the user chooses the option to upload a .json file it gets read by the following code-lines
-uploadfield.addEventListener('change', function(){
+uploadfield.addEventListener('change', async function(){
     if(uploadfield.isDefaultNamespace.length > 0){
         reader = new FileReader()
         reader.readAsText(uploadfield.files[0])
-    }
+        await Sleep(500) // wait 0.5 seconds until the result is loaded
+    } else return
+    document.getElementById("errorMessage2").innerHTML = ""
+    console.log(reader.result)
+    if(isValid(reader.result) == true){
+        if((JSON.parse(reader.result)).type == "LineString"){
+            document.getElementById("uploadButton").disabled = false
+        }
+        else document.getElementById("errorMessage2").innerHTML = 'ERROR: This is not a LineString. Expected pattern: {"type":"LineString","coordinates":[...]}'
+    } else document.getElementById("errorMessage2").innerHTML = "ERROR: This is not a valid GeoJSON" // Throws an error if not
+ 
 })
 /**
  * @function {getFile} - This functin gets calles in case a user wants to use his/her uploaded .json file.
@@ -438,16 +455,8 @@ uploadfield.addEventListener('change', function(){
  */
 function getFile(){
     document.getElementById("errorMessage2").innerHTML = ""
-    if(isValid(reader.result) == true){ // Checks whether the input is valid
-        if((JSON.parse(reader.result)).type != "LineString"){
-            document.getElementById("errorMessage2").innerHTML = 'ERROR: This is not a LineString. Expected pattern: {"type":"LineString","coordinates":[...]}'
-        } else{
-            linestring = JSON.parse(reader.result)
-            main(linestring)
-        }
-    } else { // Throws an error if not
-        document.getElementById("errorMessage2").innerHTML = "ERROR: This is not a valid GeoJSON"
-    }
+    linestring = JSON.parse(reader.result)
+    main(linestring)
 }
 
 
@@ -477,36 +486,10 @@ function main(routeForCalc){
 
     // Clears the table before filling it (needed in case it is already filled up)
     clearTable()
-    /*
+    
     // some constants to build up a table for the HTML-webpage
     const table = document.getElementById("table")
-    const thead = document.createElement("tr")
-    table.appendChild(thead)
-
-    var listCaptions = [" Distance (in km) ", " Start coordinate ", "End coordinate "]
-    // Now the first line with the headings gets build up 
-    for(let caption of listCaptions){
-        const th = document.createElement("th")
-        const thtext = document.createTextNode(caption)
-        th.appendChild(thtext)
-        thead.appendChild(th)
-    }
-
-    // Now the table gets filled up with all the values from the relevant-data-array
-    for(let distance of distances){
-        const drow = document.createElement("tr")
-        table.appendChild(drow)
-        
-        for(let elements of distance){
-            const td = document.createElement("td")
-            const thtext = document.createTextNode(elements)
-            td.appendChild(thtext)
-            drow.appendChild(td)
-        } 
-    }
-*/
-    // some constants to build up a table for the HTML-webpage
-    const table = document.getElementById("table")
+    table.className = "table table-striped"
     const thead = document.createElement("thead")
     const tr = document.createElement("tr")
     table.appendChild(thead)

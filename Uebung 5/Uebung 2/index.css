@@ -10,36 +10,12 @@ h1, p, table, div{
 #subtitle{
     font-size: 20px;
 }
-/*
-table{
-    font-family: Tahoma, Verdana, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
+#divTable{
+    padding-top: 20px;
 }
-table, th, td {
-    padding: 10px;
-    border: 0.1px solid black;
-    border-collapse: collapse;
+#mainDiv, #divTable{
+    padding-left: 5px;
 }
-th, td {
-    text-align: left;
-    padding: 8px;
-}
-.th{
-    height: 100px; 
-    text-align: middle
-}
-.th, .td{
-    height: 500px;
-    text-align: left
-}
-tr{
-    height: 50px
-}
-tr:nth-child(even) {
-    background-color: #dcecec;
-}
-*/
 #finalSum, #routeHeading{
     padding-top: 20px;
     padding-bottom: 20px;
