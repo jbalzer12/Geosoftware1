@@ -16,3 +16,8 @@ h1, p, table, div, a{
 #apiField{
     width: 250px;
 }
+@media screen and (min-width: 992px) {
+    #album py-5 bg-light{
+        height: 100%;
+    }    
+}

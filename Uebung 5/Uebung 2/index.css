@@ -50,3 +50,7 @@ h1, p, table, div{
     padding-left: 10px;
     padding-top: 10px
 }
+button{
+    width: 49%;
+}
+

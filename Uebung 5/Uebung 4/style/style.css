@@ -14,8 +14,14 @@ h1, p, table, div, a{
     padding-left: 5px;
 }
 #map { 
-    height: 610px; 
+    height: 650px;; 
 }
 #apiField{
     width: 250px;
+}
+
+@media screen and (min-width: 992px) {
+    #map{
+        width: 50%;
+    }    
 }
