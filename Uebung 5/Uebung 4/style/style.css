@@ -23,5 +23,6 @@ h1, p, table, div, a{
 @media screen and (min-width: 992px) {
     #map{
         width: 50%;
+        /*margin: auto;*/
     }    
 }
