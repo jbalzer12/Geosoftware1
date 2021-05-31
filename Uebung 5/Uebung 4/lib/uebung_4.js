@@ -439,6 +439,10 @@ function mainCalculation(route){
 // Set map 
 var map = L.map('map').setView([51.975, 7.61], 13) 
 
+// Try to make the height responsive too. But so far it doesn't work
+let deviceHeight = window.innerHeight * 0.01
+document.documentElement.style.setProperty('--deviceHeight', `${deviceHeight}px`)
+
 // Add an OpenStreetMap tile layer and keep reference in variable
 var osmLayer = new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',
 	{attribution:'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'}).addTo(map)
