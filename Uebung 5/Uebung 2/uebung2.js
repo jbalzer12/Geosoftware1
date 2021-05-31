@@ -539,5 +539,6 @@ function main(routeForCalc){
 
     document.getElementById("finalSum").innerHTML = "<b>Total length of the route: </b>"+finalSum+" km"
 }
+
 // Main-method gets called
 main(linestring)
