@@ -22,8 +22,12 @@ h1, p, table, div{
     padding-top: 20px;
     width: 100%;
 }
-#table{
-    width: 100%;
+.tableWrapper{
+    max-width: 600px;
+    margin: 0 auto;
+}
+#table th, td{
+    white-space: nowrap;
 }
 #mainDiv, #divTable{
     padding-left: 5px;

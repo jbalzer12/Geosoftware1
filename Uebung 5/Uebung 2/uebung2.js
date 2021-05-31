@@ -539,6 +539,14 @@ function main(routeForCalc){
 
     document.getElementById("finalSum").innerHTML = "<b>Total length of the route: </b>"+finalSum+" km"
 }
+// For table-style
+$(document).ready(function () {
+    $('#table').DataTable({
+        "scrollX": true,
+        //"scrollY": 200,
+    })
+    $('.dataTables_length').addClass('bs-select')
+})
 
 // Main-method gets called
 main(linestring)
