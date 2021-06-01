@@ -21,8 +21,8 @@ venv
 node_modules
 .sass-cache
 
-#Uebung4/uebung4.code-workspace
-#jquery-3.6.0.min.js
+Uebung4/uebung4.code-workspace
+jquery-3.6.0.min.js
 leaflet
-#bootstrap-5.0.1-dist
-#testLineString.txt
+bootstrap-5.0.1-dist
+testLineString.txt
