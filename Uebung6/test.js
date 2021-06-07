@@ -1,11 +1,13 @@
-let http = require('http') // use an existing module from node
-let host = "localhost"
-let port = 5000
+const express = require('express')
+const app = express()
+const port = 3000
 
-http.createServer((req, res) =>{
-    res.writeHead(200, {'Content-Type': 'text/html'})
-    res.write ("Helloooooo")
-    res.end()
-}).listen(port, host)
+app.use(express.static('web'))
+app.use('/index', express.static('web/index.html'))
 
-console.log(`Server is running on ${host}:${port}`)
+// a route matching /hello as path
+//app.get("/hello", (req, res) => res.send("Test Route!"));
+app.listen(port, () => {
+	console.log(`Example app listening at http://localhost:${port}`)
+	}
+)
