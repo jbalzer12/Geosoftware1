@@ -1,0 +1,19 @@
+{
+  "name": "lecture-07",
+  "version": "1.0.0",
+  "description": "This is my first package",
+  "main": "demoserver.js",
+  "scripts": {
+    "test": "node storageserver.js", 
+    "start": "node demoserver.js"
+  },
+  "keywords": [
+    "101",
+    "\"myfirstpackage\""
+  ],
+  "author": "Auriol Degbelo",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

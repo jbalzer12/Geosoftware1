@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Browser Storage Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.2">
+</head>
+<body>
+
+<p> This page is only used to show the effect of using storage functions in JavaScript. The example is adapted from 
+    <a href="https://youtu.be/GihQAC1I39Q">this Youtube tutorial.</a><br>
+
+Things you can do:
+<ol>
+    <li>Start the node server using: node storageserver.js</li>
+    <li>Open the browser developer tool</li>
+    <li>Go to the Application Tab in the developer tool</li>
+    <li>Uncomment the code for the first run</li>
+    <li>Restart the node server</li>
+    <li>Check the Application Tab in the developer tool again, in particular local/session/cookie</li>
+    <li>Now close the window, *comment* the code for the first run, and *uncomment* the code for the first run. You should be able to 
+        see that the session storage is gone, while the local storage is persistent. The persistence of your cookie will depend on 
+        the expiry date provided
+    </li>
+</ol>  
+
+</p>
+
+<script>
+/* uncomment for first run 
+// local storage
+localStorage.setItem('podcast-ls', '07') // items are stored as key/value pair
+
+// session storage
+sessionStorage.setItem('podcast-ss', '07') // items are stored as key/value pair
+
+// cookies
+document.cookie = 'podcast=07-1; expires='+ new Date(9999, 0, 1).toUTCString()
+//document.cookie = 'podcast=07; expires='+ new Date('2021-05-18T19:00:00').toUTCString()
+*/
+
+/* uncomment for second run 
+document.cookie = 'podcast=07-1; expires='+ new Date(9999, 0, 1).toUTCString()
+console.log(`Local storage storage: ${localStorage.getItem('podcast-ls')}`) // use a key to retrieve a previously stored value
+console.log(`Session storage: ${sessionStorage.getItem('podcast-ss')}`) // use a key to retrieve a previously stored value
+console.log(document.cookie)
+*/
+
+/* uncomment for third run, if needed
+localStorage.clear()
+sessionStorage.clear()
+*/
+
+
+</script>
+</body>
+</html>

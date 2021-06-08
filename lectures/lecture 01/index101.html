@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<head>
+    <title>My first HTML File</title>
+</head>
+<body>
+    This is my first HTML file with some inline JavaScript
+
+    <script>
+    'use strict'
+    let a = 10, b = 15
+    const c = a+b
+
+    let s1 = Symbol('abc')
+    let s2 = Symbol('abc')
+   // console.log (s1 === s2)
+    // const c  = ["e", "f", "g", "h"]
+    //const c =  {name: 'Mercedes', color: 'red', wheels: 4, engine: {cylinders: 4, size: 2.2}}
+
+    var list = ['ifgi', 'wwu', true]
+    //console.log(typeof list)
+
+    /*
+    var d = 123
+    var d = 345
+    console.log(d)
+    function example ()
+    {
+        var d = 345
+        console.log(d)
+    }
+
+    let e = 123
+    let e = 345 //Uncaught SyntaxError: Identifier 'e' has already been declared
+    console.log(e)
+    function example ()
+    {
+        let e = 345
+        console.log(e)
+    }
+
+    const f = 123
+    const f = 345 // Uncaught SyntaxError: Identifier 'f' has already been declared
+    console.log(f)
+    function example ()
+    {
+        const f = 345
+        console.log(f)
+    }
+    */
+  /*
+    var d = 123
+    d = 345 // 345
+    console.log(d)
+
+    let e = 123
+    e = 345 
+    console.log(e) // 345
+
+    const f = 123
+    f = 345 
+    console.log(f) // Uncaught TypeError: Assignment to constant variable
+    */
+
+   // let t= new Array(1, 'ifgi')
+    //console.log(t)
+
+    console.log(1 == 1) // true
+    console.log("1" == 1) // true
+    console.log("1" === 1) // false
+    console.log(NaN === NaN) // false (!)
+    console.log(+0 === -0) // true
+
+    console.log(Object.is(1, 1)) // true
+    console.log(Object.is("1", 1)) // false
+    console.log(Object.is(NaN, NaN)) // true
+    console.log(Object.is(+0,-0)) // false
+
+    let x = {}
+    let y = {}
+    let z = x
+    console.log(Object.is(x, y)) // false
+    console.log(Object.is(x, z)) // true
+
+
+    </script>
+
+</body>
+</html>

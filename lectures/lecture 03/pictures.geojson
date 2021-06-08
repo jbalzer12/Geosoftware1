@@ -1,0 +1,75 @@
+
+{ "type": "FeatureCollection",
+"features": [
+  { "type": "Feature",
+    "geometry": {"type": "Point", "coordinates": [7.628056, 51.962222]},
+    "properties": {
+      "poiname": "Prinzipalmarkt",
+      "cityname": "Münster", 
+      "link": "https://flic.kr/p/4kbwjN" }
+  },
+  { "type": "Feature",
+    "geometry": {"type": "Point", "coordinates": [7.596000123049237, 51.96910828669141]},
+    "properties": {
+      "poiname": "GEO1",
+         "cityname": "Münster", 
+      "link": "http://geomundus.org/2014/images/geo2.jpg"  }
+  },
+  { "type": "Feature",
+  "geometry": {"type": "Point", "coordinates": [7.6131, 51.9637]},
+  "properties": {
+    "poiname": "Fürstbischöfliches Schloss",
+    "cityname": "Münster", 
+    "link": "https://flic.kr/p/2jaqZrE"      }
+  },
+  { "type": "Feature",
+  "geometry": {"type": "Point", "coordinates": [13.74, 51.05]},
+  "properties": {
+    "poiname": "Dresden",
+    "cityname": "Dresden", 
+    "link": "https://flic.kr/p/xFLCa1"      }
+  },
+  { "type": "Feature",
+  "geometry": {"type": "Point", "coordinates": [9.966111, 53.546111]},
+  "properties": {
+    "poiname": "Hamburger Hafen",
+    "cityname": "Hamburg", 
+    "link": "https://flic.kr/p/ugwtqM"      }
+  },
+  { "type": "Feature",
+  "geometry": {"type": "Point", "coordinates": [9.7375, 52.367222]},
+  "properties": {
+    "poiname": "Neues Rathaus",
+    "cityname": "Hannover", 
+    "link": "https://flic.kr/p/Lewsk8"      }
+  },
+  { "type": "Feature",
+  "geometry": {"type": "Point", "coordinates": [13.377722, 52.516272]},
+  "properties": {
+    "poiname": "Brandenburger Tor",
+    "cityname": "Berlin", 
+    "link": "https://flic.kr/p/Fx7s3D"      }
+  },
+  { "type": "Feature",
+  "geometry": {"type": "Point", "coordinates": [6.783333, 51.233333]},
+  "properties": {
+   "poiname": "Düsseldorf",
+   "cityname": "Düsseldorf", 
+   "link": " https://flic.kr/p/7nTYJg"  }
+  },
+  { "type": "Feature",
+  "geometry": {"type": "Point", "coordinates": [8.684444, 50.113611]},
+  "properties": {
+  "poiname": "Frankfurt Altstadt",
+  "cityname": "Frankfurt am Main", 
+  "link": "https://flic.kr/p/2izHsWG" }
+  },
+  { "type": "Feature",
+  "geometry": {"type": "Point", "coordinates": [11.578947, 48.14065]},
+  "properties": {
+    "poiname": "Antiquarium",
+    "cityname": "München", 
+    "link": "https://flic.kr/p/2axWda3"      }
+  }
+  ]
+}

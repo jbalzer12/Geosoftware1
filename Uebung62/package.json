@@ -1,0 +1,11 @@
+{
+  "name": "uebung6",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./app.js"
+  },
+  "dependencies": {
+    "leaflet-draw": "^1.0.4"
+  }
+}

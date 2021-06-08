@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Console Trace Demo</title>
+</head>
+<body>
+
+    <button onclick=end()>END</button>
+
+    <script>
+
+    function end()
+    {
+        function pod() 
+        {
+            function cast() 
+            {
+                console.log("This is the end of the podcast 06")
+                console.trace()
+            }
+
+            cast()
+        }
+        pod()
+    }
+    end()
+
+    </script>
+
+</body>
+</html>

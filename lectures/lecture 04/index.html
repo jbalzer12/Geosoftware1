@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Digital Photo Organizer</title>
+    <script src="example04.js"></script>
+</head>
+<body>
+
+<div id="demo">
+<img src="brandenburg_gate.jpg"> <br>
+Brandenburger Tor, Berlin, Coordinates (long/lat): [13.377722, 52.516272], <a href = "https://flic.kr/p/Fx7s3D" >link</a>
+</div>
+
+<div id="nearbyButton">
+  <h1>Nearby Places</h1>
+  <button type="button" onclick="loadNearbyPlaces()">Show Nearby Places</button>
+</div>
+
+<script>
+"use strict" 
+let picturediv = document.getElementById("demo")
+let buttondiv = document.getElementById("nearbyButton")
+
+function loadNearbyPlaces() 
+{
+  let xhttp = new XMLHttpRequest()
+  xhttp.onreadystatechange = function() 
+  {
+    if (this.readyState == 4 && this.status == 200) 
+    {   
+        let res = JSON.parse(this.responseText)
+        console.log(res)
+        showNearbyPlaces(res.results.items)
+    }
+  }
+  xhttp.open("GET", 
+  "https://places.ls.hereapi.com/places/v1/discover/explore?at=52.516272%2C13.377722&cat=sights-museums&apiKey=GV8GJv1svluImsIjkd3b94taT_9L0W-xTVqfiERVwDo", 
+  true)
+  xhttp.send()
+
+  // https://developer.here.com/documentation/examples/rest/places/explore-popular-places-category
+}
+
+
+function loadPlacesPromises()
+{
+ /* 
+  fetch("https://places.ls.hereapi.com/places/v1/discover/explore?at=52.516272%2C13.377722&cat=sights-museums&apiKey=GV8GJv1svluImsIjkd3b94taT_9L0W-xTVqfiERVwDo")
+  .then(response => {
+    let res = response.json() // return a Promise as a result
+    console.log(res)
+    res.then(data => { // get the data in the promise result
+      console.log(data) 
+      showNearbyPlaces(data.results.items)
+    })
+  })
+  .catch(error => console.log(error))
+  */
+
+  fetch("https://places.ls.hereapi.com/places/v1/discover/explore?at=52.516272%2C13.377722&cat=sights-museums&apiKey=GV8GJv1svluImsIjkd3b94taT_9L0W-xTVqfiERVwDo")
+  .then(response => response.json()) // return a promise as a result
+  .then(data => {   // get the data in the promise result
+      console.log(data) 
+      showNearbyPlaces(data.results.items)
+    })
+  .catch(error => console.log(error))
+}
+
+
+async function loadPlaceAsyncAwait()
+{
+  let res = await fetch("https://places.ls.hereapi.com/places/v1/discover/explore?at=52.516272%2C13.377722&cat=sights-museums&apiKey=GV8GJv1svluImsIjkd3b94taT_9L0W-xTVqfiERVwDo")
+  let data = await res.json()
+  console.log(data)
+  showNearbyPlaces(data.results.items)
+}
+
+
+function showNearbyPlaces(nbplaces)
+{
+  buttondiv.style.display = "none"
+  console.log(nbplaces)
+  picturediv.append(document.createElement("br"), document.createElement("br"),
+   "List of nearby places, with their distance" , document.createElement("br"), document.createElement("br"))
+  let nbplace
+  for (const element of nbplaces) 
+  {
+    nbplace = element.title + ", " + element.distance + " meters"
+    picturediv.append(nbplace, document.createElement("br"))
+   }
+}
+
+let p = new Promise ((resolve, reject) =>
+{
+    let success = true
+    if (success)
+    {
+      resolve ("operation successful")
+    }
+    else
+    {
+      reject ("operation not successful")
+    }
+
+})
+
+p.then((message) => {
+  console.log(message)
+}).catch(message => {
+
+  console.log(message)
+})
+
+console.log(window.navigator)
+console.log(document.location.origin)
+</script>
+
+</body>
+</html>

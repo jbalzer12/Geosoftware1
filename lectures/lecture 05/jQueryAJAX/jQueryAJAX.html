@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Digital Photo Organizer</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div id="demo">
+<img src="brandenburg_gate.jpg"> <br>
+Brandenburger Tor, Berlin, Coordinates (long/lat): [13.377722, 52.516272], <a href = "https://flic.kr/p/Fx7s3D" >link</a>
+</div>
+
+<div id="nearbyButton">
+  <h1>Nearby Places</h1>
+  <button type="button" onclick="loadNearbyPlacesJQAJAX()">Show Nearby Places</button>
+</div>
+
+<script>
+"use strict" 
+let picturediv = document.getElementById("demo")
+let buttondiv = document.getElementById("nearbyButton")
+
+function loadNearbyPlaces() 
+{
+  let xhttp = new XMLHttpRequest()
+  xhttp.onreadystatechange = function() 
+  {
+    if (this.readyState == 4 && this.status == 200) 
+    {   
+        let res = JSON.parse(this.responseText)
+        console.log(res)
+        showNearbyPlaces(res.results.items)
+    }
+  }
+  xhttp.open("GET", 
+  "https://places.ls.hereapi.com/places/v1/discover/explore?at=52.516272%2C13.377722&cat=sights-museums&apiKey=GV8GJv1svluImsIjkd3b94taT_9L0W-xTVqfiERVwDo", 
+  true)
+  xhttp.send()
+
+}
+
+
+
+
+function loadNearbyPlacesJQAJAX() 
+{
+
+  $.ajax({
+    url: "https://places.l.hereapi.com/places/v1/discover/explore?at=52.516272%2C13.377722&cat=sights-museums&apiKey=GV8GJv1svluImsIjkd3b94taT_9L0W-xTVqfiERVwDo",
+    method: "GET",
+  })
+  .done(function(response) {
+    alert( "success" )
+    console.dir(response)
+    showNearbyPlaces(response.results.items)
+  })
+  .fail(function(xhr, status, errorThrown) {
+    alert( "error" )
+    console.dir(xhr)
+    console.log(status)
+    console.log(errorThrown)
+  })
+  .always(function(xhr, status) {
+    alert( "after success or fail" )
+    console.dir(xhr)
+    console.log(status)
+  })
+
+}
+
+function showNearbyPlaces(nbplaces)
+{
+  buttondiv.style.display = "none"
+  console.log(nbplaces)
+  picturediv.append(document.createElement("br"), document.createElement("br"),
+   "List of nearby places, with their distance" , document.createElement("br"), document.createElement("br"))
+  let nbplace
+  for (const element of nbplaces) 
+  {
+    nbplace = element.title + ", " + element.distance + " meters"
+    picturediv.append(nbplace, document.createElement("br"))
+   }
+}
+
+let status = "End"
+let currentpodcast = "podcast 05"
+console.log(`We are at the ${status} of ${currentpodcast}`)
+
+console.log(`We are at the %c${status} of ${currentpodcast}`, 
+"color: red; font-weight: bold")
+console.log(`We are at the %c${status} %cof %c${currentpodcast}`, 
+"color: red; font-size: 30px", "", "color: green; font-variant: small-caps; font-size: 30px")
+
+</script>
+
+</body>
+</html>
