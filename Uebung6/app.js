@@ -7,10 +7,10 @@ const app = express()
 const port = 3000
 
 app.use('/search', searchRouter);
-//app.use(express.static('web'))
+app.use(express.static('web'))
 //app.use('/static', express.static(path.join(__dirname, 'index.html')))
 //app.use('/static', express.static('web/index.html'))
-app.use('/map', express.static('./web/Uebung 4/index.html'))
+app.use('/map', express.static(path.join(__dirname, './web/Uebung 4/index.html')))
 app.use('/table', express.static(path.join(__dirname, './web/Uebung 2/index.html'))) // WENN ICH DAS HIER EINGEBE (ALSO localhost:3000/table) DANN FUNKTIONERT DIE SEITE NICHT MEHR
 app.use('/', express.static(path.join(__dirname, 'Uebung 2/index.html')))
 
@@ -24,9 +24,10 @@ app.use('/leafletDrawCSS', express.static('lib/leaflet-draw/dist/images/leaflet.
 
 app.listen(port, () =>
 {
+
     console.log(`App listening at http://localhost:${port}`)
-    console.log(`Since we have only one route, named /static/, use /static/filename to show a file from the public folder`)
-    console.log(`E.g. /static/index.html will render index.html file`)
+    //onsole.log(`Since we have only one route, named /static/, use /static/filename to show a file from the public folder`)
+    //console.log(`E.g. /static/index.html will render index.html file`)
     //console.log(`You can also change /static/ to / into the route definition (line 9). Things will be more convenient then :)`)
 
 })

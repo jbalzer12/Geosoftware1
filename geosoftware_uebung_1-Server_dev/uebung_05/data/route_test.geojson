@@ -1,0 +1,17 @@
+var route_test = {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            7.55859375,
+            50.29635802110319
+          ],
+          [
+            13.51318359375,
+            50.366488762738264
+          ]
+        ]
+      }
+    }

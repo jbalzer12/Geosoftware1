@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Geosoftware I - Uebung 1</title>
+            <script type="text/javascript" src="data/polygon.js"></script> 
+            <script type="text/javascript" src="data/route.js"></script> 
+            <script type="text/javascript" src="lib/uebung_1.js"></script> 
+            <style>
+                table, th, td {
+                  border: 1px solid black; 
+                }
+            </style>
+        </head>
+        <body>
+            <h3>Table 1 - all paths (not cut at intersection)</h3>
+            <h5 id="gesamtlaenge1"></h5>
+            <table>
+                <tr>
+                    <th>inside or outside</th>
+                    <th>Startpoint (lon/lat)</th>
+                    <th>Endpoint (lon/lat)</th>
+                    <th>Length in Meters</th>
+                </tr>
+                <tBody id="tableBody1">
+                </tBody>
+            </table>
+
+            <h3>Table 2 - all paths (cut at intersection)</h3>
+            <h5 id="gesamtlaenge2"></h5>
+            <table>
+                <tr>
+                    <th>inside or outside</th>
+                    <th>Startpoint (lon/lat)</th>
+                    <th>Endpoint (lon/lat)</th>
+                    <th>Length in Meters</th>
+                </tr>
+                <tBody id="tableBody2">
+                </tBody>
+            </table>
+            <script>
+                "use strict"; //javaScript mode
+                //Table 1
+                var segments1 = getInsideOutsideSegments(route, polygon); //segement selection for the first table
+                var table1 = document.getElementById("tableBody1"); //define table 1 as variable by its id
+                var paths1 = getPaths(segments1); //define an empyt array for the aggregated paths
+
+                //fill the table with the paths
+                createPathTable(table1, paths1); //create data fitting for the table and fill it
+
+                //Calculating the overall length
+                document.getElementById('gesamtlaenge1').innerHTML = "Gesamtlänge: " +  calculateLengthOfPaths(segments1).toFixed(2) + "m"; 
+
+                //Table 2
+                var segments2 = getSegments(route, polygon); //segement selection for the second table
+                var table2 = document.getElementById("tableBody2"); //define table 2 as variable by its id
+                var paths2 = getPaths(segments2); //define an empyt array for the aggregated paths;
+
+                //fill the table with the paths
+                createPathTable(table2, paths2); //create data fitting for the table and fill it
+
+                //Calculating the overall length
+                document.getElementById('gesamtlaenge2').innerHTML = "Gesamtlänge: " +  calculateLengthOfPaths(segments2).toFixed(2) + "m"; 
+            </script>
+        </body>
+</html> 

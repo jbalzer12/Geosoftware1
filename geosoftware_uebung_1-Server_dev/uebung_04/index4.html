@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="UTF-8" />
+            <title>Geosoftware I - Uebung 4</title>
+            <!--Route-->
+            <script type="text/javascript" src="data/route.geojson"></script> 
+            <!--Functions-->
+            <script type="text/javascript" src="lib/uebung_4.js"></script> 
+            <!--Style-->
+            <script type="text/javascript" src="lib/jQuerry_3_6_0.js"></script> 
+            <!--Leaflet-->
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+            integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+            crossorigin=""/>
+            <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin=""></script>
+            <!--Leaflet Draw-->
+            <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.4.10/leaflet.draw.css' rel='stylesheet' />
+            <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.4.10/leaflet.draw.js'></script>
+            <!--jQuery-->
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <!--Open Weather API Key-->
+            <script type="text/javascript" src="data/api_keys.js"></script> 
+
+            <!--Style for the map container-->
+            <style type="text/css">
+                #mapdiv {height : 600px; width : 600px;}
+            </style>
+        </head>
+        <body>
+                <!--div to store the map-->
+                <div id="mapdiv"></div>
+                <!--button to reset the map-->
+                <input type="button" id="resetButton" value="reset intersections" onclick="resetMap()">
+            
+            <script>
+                //Map Object
+                var map = L.map('mapdiv'); 
+
+                //Basemap Layer
+                var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+					attribution: '&copy; <a href = "http://osm.org/copyright">OpenStreetMap</a> contributors'
+				}).addTo(map); 
+
+                //Route layer
+                var routeLayer = L.geoJSON(route).addTo(map);
+
+                //Fit Bounds to the Route
+                map.fitBounds(routeLayer.getBounds());
+
+                //Feature Group Layers for the Input Features
+                var rectangleLayer = L.featureGroup().addTo(map);
+                var markerLayer = L.featureGroup().addTo(map);
+
+                //Layer Control
+                //Overlays
+				var overlayMaps = { 
+					"Route": routeLayer, //Route
+                    "Rectangle": rectangleLayer, //Rectangle
+                    "Markers": markerLayer //Markers
+				}; 
+                //Basemaps
+				var baseMaps = {
+					"OSM": osm //OSM as Basemap
+				}; 
+                //add layerc ontrol to the map
+				L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+                //Draw Control
+                var drawControl = new L.Control.Draw({
+                    draw: {
+                        //disable all draw functions but the rectangle
+                        polyline: false, 
+                        polygon: false,
+                        circle: false,
+                        marker: false
+                    },
+                    edit: {
+                        //drawn features will be stored in the rectangleLayer
+                        featureGroup: rectangleLayer
+                    }
+                }).addTo(map); //add the control to the map
+
+                //initialize variables for the algorithm
+                var inputRectangle; //varibale for storing the extracted leaflet draw object
+                var inputRectangleArray = []; //array for storing the coordinates of the drawn rectangle
+                var inputRectangleGeoJSON; //variable for storing the drawn rectangle converted to a geojson
+                var intersections = []; //array for storing the intersections of the route with the drawn rectangle
+
+                //start the "calculation" as soon as a rectangle is drawn on the map
+                map.on('draw:created', function(e) {
+                    rectangleLayer.addLayer(e.layer); //add the rectangle to the layer
+                    var inputRectangle = e.layer._latlngs[0]; //extract the rectangle coordinates 
+                    
+                    //push the rectangle verticies into an array
+                    for(i = 0; i < inputRectangle.length; i++) {
+                        inputRectangleArray.push([inputRectangle[i].lat, inputRectangle[i].lng]);
+                    };
+                    
+                    inputRectangleArray.push(inputRectangleArray[0]); //push the last vertex to the array to conform to the geoJSON encoding
+                    inputRectangleArray = convertToLonLat(inputRectangleArray); //swap coordinates
+                    inputRectangleGeoJSON = arrayToGeoJson(inputRectangleArray); //convert array to a geoJSON
+
+                    //calculate intersections
+                    intersections = getAllIntersections(route.features[0].geometry.coordinates[0], inputRectangleGeoJSON.coordinates[0]);
+
+                    //empty used array to enbale a clean second input
+                    inputRectangleArray = [];
+                    inputRectangleArray = [];
+                    inputRectangleGeoJSON = [];
+
+                    for(i = 0; i < intersections.length; i++) { //for every intersection
+                        var marker = new L.Marker([intersections[i][1], intersections[i][0]]); //create a marker variable
+                        marker.addTo(map); //place the marker to the map
+                        markerLayer.addLayer(marker); //add the marker to the corresponding layer
+                        weatherRequest([intersections[i][0], intersections[i][1]], openweather, marker); //perform a weather request for the marker
+                    };
+                });
+            </script>
+        </body>
+</html> 

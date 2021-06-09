@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <head>
-    <div id="bg-head">
-        <h1 id="title" class="d-block p-2 bg-dark text-white">Geosoftware 1, 2021 - Übung 2 </h1>
-        <p id="subtitle" class="d-block p-2 bg-dark text-white">Abgabe von: J. Balzer</p>
-    </div>
-    <!--Link for Bootstrap-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <!--Link for jQuerry-->
-    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!--My own CSS-file-->
-    <link rel="stylesheet" href="./Uebung 2/index.css"/>
-    <!--Links for the table with horizontal scrollbar-->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
-    
-    <!--Links for my own embedded files-->
-    <script href="web/Uebung 2/route.js"></script> 
-    <script async href="web/Uebung 2/uebung2.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
+    <script src="/bootstrap/dist/js/bootstrap.js"></script>
+    <!--jQuery-->
+    <script src="/jquery/dist/jquery.js"></script>
+    <!--Datatables-bootstrap_CSS-->
+    <script src="/datatables-bootstrap/css/dataTables.bootstrap.css"></script>
+    <!--Datatables-bootstrap-->
+    <script src="/datatables-bootstrap/js/dataTables.bootstrap.js"></script>
+    <!--ajax-->
+    <script src="/ajax/lib/ajax.js"></script>
+    
+    <!--Route-->
+    <script type="text/javascript" src="data/route.js"></script> 
+    <!--Polygon-->
+    <script type="text/javascript" scr="data/polygon.js"></script>
 </head>
 <body>
+    <div id="bg-head">
+        <h1 id="title" class="d-block p-2 bg-dark text-white">Geosoftware 1, 2021 - Übung 6 </h1>
+        <p id="subtitle" class="d-block p-2 bg-dark text-white">Abgabe von: J. Balzer / A. Pilz</p>
+    </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="../index.html">Übungen</a>
@@ -28,9 +31,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-link active" aria-current="page" href="../index.html">Übersicht</a>
-                    <a class="nav-link active" aria-current="page" href="../Uebung 2/index.html">Übung 2</a>
-                    <a class="nav-link active" aria-current="page" href="../Uebung 4/index.html">Übung 4</a>
+                    <a class="nav-link active" aria-current="page" href="./index.html">Übersicht</a>
+                    <a class="nav-link active" aria-current="page" href="./uebung_2.html">Übung 2</a>
+                    <a class="nav-link active" aria-current="page" href="./uebung_4.html">Übung 4</a>
                 </div>
             </div>
         </div>
@@ -46,8 +49,9 @@
         <button type="button" class="btn btn-secondary btn-lg btn-block" onclick="useStandard()">Use standard-<br>route</button>
         <button type="button" class="btn btn-secondary btn-lg btn-block" onclick="getInputValue()">Use input-<br>route</button>
         <div id="uploadInfo">Upload a .json or .geojson file including a LineString to use it directly as route</div>
-        <input type="file" id="uploadfield"><br>
-        <div id="errorMessage2" class=""></div><br>
+        <!--<input type="file" id="uploadfield"><br>-->
+        <input type = "file" id="uploadfield"></input><br>
+        <div id="errorMessage2"></div><br>
         <button id="uploadButton" type="button" class="btn btn-secondary btn-lg" disabled="true" onclick="getFile()">Use uploaded file</button>
         <div id="routeHeading">Used polygon:</div>
         <textarea type="text" id="polygon"></textarea>
@@ -56,11 +60,13 @@
     <footer id="footer" class="footer bg-dark text-center text-lg-start text-white">
         <!-- Copyright -->
         <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-            © 2020 Copyright: J. Balzer
+            © 2020 Copyright: J. Balzer / A. Pilz
         </div>
         <!-- Copyright -->
     </footer>
-    <!--Link for Bootstrap-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <!--Style-->
+    <link rel="stylesheet" type="text/css" href="/css/uebung_2.css">
+    <!--Functions-->
+    <script type="text/javascript" src="/js/uebung_2.js"></script> 
 </body>
 </html>
