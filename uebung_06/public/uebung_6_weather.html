@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1"> 
+            <!--Bootstrap-->
+            <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
+            <script src="/bootstrap/dist/js/bootstrap.js"></script>
+            <!--jQuery-->
+            <script src="/jquery/dist/jquery.js"></script>
+            <!--Leaflet-->
+            <link rel="stylesheet" href="/leaflet/dist/leaflet.css"/>
+            <script type="text/javascript" src="/leaflet/dist/leaflet.js"></script>
+            <!--Leaflet Draw-->
+            <link rel="stylesheet" href='/leaflet-draw/dist/leaflet.draw.css'/>
+            <script src='/leaflet-draw/dist/leaflet.draw.js'></script>
+        </head>
+        <body>
+            <!--Header-->
+            <div id="bg-head">
+                <h1 id="title" class="d-block p-2 bg-dark text-white">Geosoftware 1, 2021 - Übung 6 </h1>
+                <p id="subtitle" class="d-block p-2 bg-dark text-white">Abgabe von: J. Balzer / A. Pilz</p> 
+            </div>
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="./index.html">Übersicht</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav">
+                            <a class="nav-link active" aria-current="page" href="./uebung_6_manage.html">Managen der Routen</a>
+                            <a class="nav-link active" aria-current="page" href="./uebung_6_weather.html">Verwendung der Routen</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div id="columnContainer" class="container-fluid"> 
+                <div class="row">
+                    <div id="selections" class="column"> <br>
+                        <label for="api_key">Bitte einen API-Key eingeben:</label><br>
+                        <input type="text" id="api_key_input" name="api_key" style="width: 80%">
+                        <input type="submit" value="Eingabe" onclick="getAPIKey()" id= "input_button" type="button" class="btn btn-danger">
+                        <table id="availableRoutes" class="table">
+                            <tr>
+                                <th>Bezeichnungen</th>
+                                <th>Auswahl</th>
+                            </tr>
+                            <tBody id="routesTableBody">
+                            </tBody>
+                        </table>             
+                        <button class="btn btn-secondary" onClick="clearMap()">Auswahl zurücksetzen</button> 
+                    </div>   
+                    <!--map container-->     
+                    <div id="mapColumn" class="column"><br><br><br>
+                        <div id="mapdiv"></div><br> 
+                    </div> 
+                </div>
+            </div> <br><br>
+            <!-- Footer -->
+            <footer id="footer" class="bg-dark text-center text-lg-start text-white sticky-bottom">
+                <!-- Copyright -->
+                <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+                © 2020 Copyright: J. Balzer / A. Pilz
+                </div>
+            </footer>
+            <!--Utilities-->
+            <link rel="stylesheet" type="text/css" href="/css/uebung_6_weather.css">
+            <script type="text/javascript" src="/js/uebung_6_weather.js"></script> 
+        </body>  
+</html> 

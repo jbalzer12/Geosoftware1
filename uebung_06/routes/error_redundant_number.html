@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1"> 
+            <!--Bootstrap-->
+            <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
+            <script src="/bootstrap/dist/js/bootstrap.js"></script>
+            <!--jQuery-->
+            <script src="/jquery/dist/jquery.js"></script>
+            <!--Style-->
+            <link rel="stylesheet" type="text/css" href="/css/error.css">
+        </head>
+        <body>
+            <!--Header-->
+			<div id="bg-head" class="d-block p-2 bg-dark text-white">
+                <h1 id="title" class="d-block p-2 bg-dark text-white">Geosoftware 1, 2021 - Übung 6 </h1>
+                <p id="subtitle" class="d-block p-2 bg-dark text-white">Abgabe von: J. Balzer / A. Pilz</p> 
+            </div>
+            <!--Alert-->
+			<div class="alert alert-danger text-center" role="alert">
+                <h1>Die Operation war nicht erfolgreich!</h1>
+                <p>Es existiert bereits ein Datensatz mit der eingegebenen Nummer!</p>
+                <form action="/weatherData">
+                    <input type="submit" value="Zur Wetterkarte" />
+                </form>
+				<br>
+                <form action="/manageRoutes">
+                    <input type="submit" value="Zur Routenverwaltung" />
+                </form>
+			</div>
+            <!--Footer-->
+			<footer id="footer" class="bg-dark text-center text-lg-start text-white sticky-bottom" style="position: absolute; bottom: 0; width: 100%; height: 60px; z-index: 5;">
+				<!-- Copyright -->
+				<div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+				© 2020 Copyright: J. Balzer / A. Pilz
+				</div>
+			</footer>
+        </body>
+</html> 

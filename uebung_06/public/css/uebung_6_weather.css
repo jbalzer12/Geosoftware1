@@ -1,0 +1,76 @@
+/* Task 6 */
+
+html{
+    position: relative;
+    min-height: 100%;
+}
+
+h1, p, table, div, a{
+    font-family: Tahoma, Verdana, sans-serif;
+}
+#bg-head{
+    background-color: rgb(34,37,41); 
+    padding-top: 20px; 
+}
+#subtitle{
+    font-size: 20px;
+}
+#showButton{
+    left: 10px;
+}
+#mapdiv{
+    bottom: 60px;
+    height: 80vh;
+    position: relative;
+    z-index: 3;
+}
+#footer{
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 60px;
+    z-index: 5;
+}
+#columnContainer {
+    padding-top: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+    width: 100vw;
+}
+
+@media only screen and (min-width: 992px) {
+    #mapdiv {
+        width: 100%;
+        margin: auto;
+        height: 550px;
+        overflow: hidden;
+    }
+    #selections{
+        width: 30%;
+    }
+    #mapColumn{
+        width: 70%;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    #mapdiv {
+        width: 100%;
+        height: 450px;
+        margin: auto;
+        overflow: hidden;
+    }
+    #selections{
+        width: 100%;
+        padding-bottom: 100px;
+    }
+    #mapColumn{
+        width: 100%;
+    }
+    #columnContainer {
+        padding-top: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        width: 100vw;
+    }
+}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <!--Bootstrap-->
+        <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
+        <script src="/bootstrap/dist/js/bootstrap.js"></script>
+        <!--jQuery-->
+        <script src="/jquery/dist/jquery.js"></script>
+        <!--Leaflet-->
+        <link rel="stylesheet" href="/leaflet/dist/leaflet.css"/>
+        <script type="text/javascript" src="/leaflet/dist/leaflet.js"></script>
+        <!--Leaflet Draw-->
+        <link rel="stylesheet" href='/leaflet-draw/dist/leaflet.draw.css'/>
+        <script src='/leaflet-draw/dist/leaflet.draw.js'></script>
+        <!--Style-->
+        <link rel="stylesheet" type="text/css" href="/css/index.css">
+    <body>
+        <!--Header-->
+        <div id="bg-head">
+            <h1 id="title" class="d-block p-2 bg-dark text-white">Geosoftware 1, 2021 - Übung 6 </h1>
+            <p id="subtitle" class="d-block p-2 bg-dark text-white">Abgabe von: J. Balzer / A. Pilz</p> 
+        </div>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="./index.html">Übersicht</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link active" aria-current="page" href="./uebung_6_manage.html">Managen der Routen</a>
+                        <a class="nav-link active" aria-current="page" href="./uebung_6_weather.html">Verwendung der Routen</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Album -->
+        <div id="album" class="album py-5 bg-light">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <img class="card-img-top" src="./gfx/manage-data.png" alt="manage-data.png"> <!--doesnt work-->
+                            <div class="card-body">
+                                <p class="card-text">Das <b>Managen der Routen</b> umfasst <li>das Hinzufügen von Routen, <li>das Entfernen von Route, <li>sowie das Bearbeiten ihrer Bezeichnung. </p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a href="./uebung_6_manage.html" class="btn btn-sm btn-outline-secondary">Öffnen</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card mb-4 box-shadow">
+                            <img class="card-img-top" src="./gfx/weather.png" alt="weather.png">
+                            <div class="card-body"> 
+                                <p class="card-text"><b>Schneiden Sie </b>ein beliebiges <b>Polygon mit einer</b> von Ihnen bestimmten <b>Route </b>und erhalten Sie die aktuellsten Wetterdaten an den Schnittpunkten!</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        <a href="./uebung_6_weather.html" class="btn btn-sm btn-outline-secondary">Öffnen</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <footer id="footer" class="bg-dark text-center text-lg-start text-white sticky-bottom">
+            <!-- Copyright -->
+            <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+              © 2020 Copyright: J. Balzer / A. Pilz
+            </div>
+        </footer>
+    </body>
+</html> 
