@@ -1,1 +1,6 @@
 node_modules
+jquery-3.6.0.min.js
+leaflet
+bootstrap-5.0.1-dist
+testLineString.txt
+.DS_Store
