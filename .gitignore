@@ -11,3 +11,5 @@ mongodb
 routes
 leaflet
 package.json
+test.js
+package-lock.json
