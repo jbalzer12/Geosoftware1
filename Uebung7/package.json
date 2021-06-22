@@ -1,0 +1,22 @@
+{
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ajax": "0.0.4",
+    "body-parser": "^1.19.0",
+    "bootstrap": "^5.0.1",
+    "datatables-bootstrap": "0.0.1",
+    "express": "^4.17.1",
+    "fs": "^0.0.1-security",
+    "jquerry": "0.0.1-security",
+    "jquery": "^3.6.0",
+    "leaflet": "^1.7.1",
+    "leaflet-draw": "^1.0.4",
+    "mongodb": "^3.6.9",
+    "nodemon": "^2.0.7",
+    "path": "^0.12.7",
+    "turf": "^3.0.14"
+  }
+}

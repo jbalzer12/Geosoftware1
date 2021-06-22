@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1"> 
+            <!--Bootstrap-->
+            <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.css">
+            <script src="/bootstrap/dist/js/bootstrap.js"></script>
+            <!--jQuery-->
+            <script src="/jquery/dist/jquery.js"></script>
+            <!--Leaflet-->
+            <link rel="stylesheet" href="/leaflet/dist/leaflet.css"/>
+            <script type="text/javascript" src="/leaflet/dist/leaflet.js"></script>
+            <!--Leaflet Draw-->
+            <link rel="stylesheet" href='/leaflet-draw/dist/leaflet.draw.css'/>
+            <script src='/leaflet-draw/dist/leaflet.draw.js'></script>
+        </head>
+        <body onload="getDatafromDB()"> <!--load data at startup-->
+            <!--Header-->
+            <div id="bg-head">
+                <h1 id="title" class="d-block p-2 bg-dark text-white">Geosoftware 1, 2021 - Übung 6 </h1>
+                <p id="subtitle" class="d-block p-2 bg-dark text-white">Abgabe von: J. Balzer / A. Pilz</p> 
+            </div>
+            <p>In der Datenbank gespeicherte Routen:</p>
+            <div id="mapdiv" style="width: 400px; height: 300px;"></div> <!--map container-->
+            <!--Route Table-->
+            <table style="border: 1px solid black;">
+                <tr style="border: 1px solid black ;">
+                    <th style="border: 1px solid black ;">Nummer</th>
+                </tr>
+                <tBody id="tableBody">
+                </tBody>
+            </table>
+            <!--Form for Posting new Dataset to the DB-->
+            <!--Add-->
+            <p>Route in der speichern:</p>
+            <form action="/add/newRoute" method="post">
+                <label for="fname">Nummer</label><br>
+                <input type="text" id="nummer" name="nummer"><br>
+                <label for="lname">GeoJSON</label><br>
+                <input type="text" id="geojson" name="geojson"><br><br>
+                <input type="submit" value="Post">
+            </form> 
+            <!--Update-->
+            <p>Bezeichnung gespeicherter Route ändern:</p>
+            <form action="/update/changeRoute" method="post">
+                <label for="fname">Nummer</label><br>
+                <input type="text" id="nummer" name="nummer"><br>
+                <label for="lname">Neue Nummer</label><br>
+                <input type="text" id="neuenummer" name="neuenummer"><br><br>
+                <input type="submit" value="Update">
+            </form> 
+            <!--Delete-->
+            <p>gespeicherte Route löschen:</p>
+            <form action="/delete/removeEntry" method="post">
+                <label for="gNummer">Nummer</label><br>
+                <input type="text" id="gNummer" name="gNummer"><br>
+                <input type="submit" value="Delete">
+            </form> 
+            <!-- Footer -->
+            <footer id="footer" class="bg-dark text-center text-lg-start text-white sticky-bottom">
+                <!-- Copyright -->
+                <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+                © 2020 Copyright: J. Balzer / A. Pilz
+                </div>
+            </footer>
+        </body>
+        <!--Utilities-->
+        <script type="text/javascript" src="/js/uebung_6_manage.js"></script> 
+</html> 
