@@ -5,9 +5,9 @@ Readme for folder 'Uebung07' which works with Docker:
 
 The app runs as a dockerized application.
 Therefore you will need the following images:
-    - mongo
-    - mongo-express
-    - jbalzer12/uebung7
+    * mongo
+    * mongo-express
+    * jbalzer12/uebung7
 
 Once pulled all images or started the application via the docker-compose.yml file, you'll
 need to create a database in mongo using the mongo-express admin-interface (accessible via localhost:8081)
