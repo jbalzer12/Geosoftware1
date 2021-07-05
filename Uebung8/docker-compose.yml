@@ -1,0 +1,18 @@
+version: '3'
+services:
+    appservice:
+        image: jbalzer12/uebung7
+        build: .
+        ports:
+            - '5000:3000'
+        depends_on: 
+            - mongo
+    mongo:
+        container_name: mongo
+        image: mongo
+        ports: 
+            - '27017:27017'
+    mongo-express:
+        image: mongo-express
+        ports:
+            - '8081:8081'
