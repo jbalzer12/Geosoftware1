@@ -338,7 +338,11 @@ function compressData(list)
             dist = calculateDistanceLongDistance(list[i][j])
             startpoint = list[i][j][0]
             endpoint = list[i][j][list[i][j].length-1]
-            distances[counter] = [dist, startpoint, endpoint]
+            distances[counter] = {} 
+            distances[counter].dist = dist
+            distances[counter].startpoint = startpoint
+            distances[counter].endpoint = endpoint
+            //distances[counter] = [dist, startpoint, endpoint]
             counter++
         } 
     }
@@ -460,6 +464,7 @@ route = new JSONConstructor(route, "LineString")
 document.getElementById("route").innerHTML = JSON.stringify(route)
 linestring = route
 
+var finalSum
 var lists
 function main(routeForCalc){
     // Recognizes all points from route which are inside of the polygon and those, 
@@ -473,9 +478,14 @@ function main(routeForCalc){
     compressData(lists)
 
     // Now all the elements in the array with all the needed data gets sorted after the length of each section
-    distances.sort(function([a,b],[c,d]){return a-c}) 
+    distances.sort(function(a,b){
+        if(a.dist < b.dist) return -1
+        if(a.dist > b.dist) return 1;
+        return 0;
+    }) 
 
     // Clears the table before filling it (needed in case it is already filled up)
+    /*
     clearTable()
 
     // some constants to build up a table for the HTML-webpage
@@ -504,16 +514,18 @@ function main(routeForCalc){
             drow.appendChild(td)
         } 
     }
-
+    */
     // And also the final lenght of the route gets calucalated.
     // But here the know coordinates (also the intersection-coordinates) get used
     // So the value might be a little bit different from the original length of the route
-    var finalSum = 0
+    finalSum = 0
     for(let distance of distances){
-        finalSum += distance[0]
-    }
 
-    document.getElementById("finalSum").innerHTML = "<b>Total length of the route: </b>"+finalSum+" km"
+        finalSum += distance.dist
+    }
+    console.log(finalSum)
+    //document.getElementById("finalSum").innerHTML = "<b>Total length of the route: </b>"+finalSum+" km"
+    
 }
 // Main-method gets called
 main(linestring)

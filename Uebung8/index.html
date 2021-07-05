@@ -1,16 +1,37 @@
 <!DOCTYPE html>
 <head>
-    <h1>Geosoftware 1, 2021 - Übung 8 </h1>
-    <p>Abgabe von: J. Balzer & A. Pilz</p>
     <link rel="stylesheet" href="index.css"/>
     <script src="polygon.js"></script>
     <script src="route.js"></script> 
+    <script src="vue.min.js"></script> 
     <script async src="uebung2.js"></script>
     <script async src="uebung8.js"></script>
 </head>
 <body>
-    <table id="table"><table>
-    <div id="finalSum"></div>
+    <h1 id="title">{{ message }}</h1>
+    <p id="subtitle">{{ message }}</p>
+    <!--<table id="table"><table>
+    <div id="finalSum"></div>-->
+    <div id="table">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th> Distance (in km) </th>
+                    <th> Start coordinate </th>
+                    <th> End coordinate </th>
+                </tr>
+            </thead>
+            <tr v-for="distance in distances">
+                <td>{{distance.dist}}</td>
+                <td>{{distance.startpoint[0]}}, {{distance.startpoint[1]}}</td>
+                <td>{{distance.endpoint[0]}}, {{distance.endpoint[1]}}</td>
+            </tr>
+        </table>
+    </div><br><br>
+    <div id="finalSumValue">{{ message }}</div><br><br>
+</div>
+
+
     <textarea type="text" id="route"></textarea>
     <textarea type="text" id="input" placeholder="Enter LineString..."></textarea>
     <div id="errorMessage"></div><br>
