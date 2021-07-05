@@ -8,11 +8,13 @@ services:
         depends_on: 
             - mongo
     mongo:
-        container_name: mongo
         image: mongo
         ports: 
             - '27017:27017'
+        volumes:
+            - ./data:/data/db
     mongo-express:
         image: mongo-express
         ports:
             - '8081:8081'
+        restart: always
