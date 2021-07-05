@@ -23,8 +23,8 @@ app.use('/update', updateRouter);
 app.use('/delete', deleteRouter);
 
 //Gets
-app.get("/weatherData", (req, res) => { res.sendFile(__dirname + "/public/uebung_6_weather.html"); });
-app.get("/manageRoutes", (req, res) => { res.sendFile(__dirname + "/public/uebung_6_manage.html"); });
+app.get("/weatherData", (req, res) => { res.sendFile(__dirname + "/public/uebung_8_weather.html"); });
+app.get("/manageRoutes", (req, res) => { res.sendFile(__dirname + "/public/uebung_8_manage.html"); });
 app.get("/home", (req, res) => { res.sendFile(__dirname + "/public/index.html"); });
 
 //Listener

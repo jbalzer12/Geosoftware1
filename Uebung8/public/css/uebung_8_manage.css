@@ -1,0 +1,62 @@
+/* Task */
+
+html{
+    position: relative;
+    min-height: 100%;
+}
+h1, p, table, div, a{
+    font-family: Tahoma, Verdana, sans-serif;
+}
+#bg-head{
+    background-color: rgb(34,37,41); 
+    padding-top: 20px; 
+}
+#subtitle{
+    font-size: 20px;
+}
+
+#footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    z-index: 5;
+}
+#mapdiv{
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+}
+#columnContainer{
+    padding-top: 10px;
+    padding-left: 40px;
+    padding-right: 40px;
+    width: 100vw;
+}
+
+
+@media only screen and (min-width: 992px) {
+    #mapdiv {
+        height: 550px;
+    }
+    #menu{
+        width: 20%;
+    }
+    #columnMap{
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    #mapdiv {
+        height: 450px;
+    }
+    #menu {
+        width: 100%;
+    }
+    #columnMap{
+        width: 100%;
+    }
+}
