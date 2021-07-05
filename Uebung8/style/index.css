@@ -1,0 +1,75 @@
+h1, p, table, div{
+    font-family: Tahoma, Verdana, sans-serif;
+}
+table {
+    font-family: Tahoma, Verdana, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+table, th, td {
+    padding: 10px;
+    border: 0.1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+.th{
+    height: 100px; 
+    text-align: middle
+}
+.th, .td{
+    height: 500px;
+    text-align: left
+}
+tr{
+    height: 50px
+}
+tr:nth-child(even) {
+    background-color: #dcecec;
+}
+#finalSum, #routeHeading{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: 200 px;
+    font-size: 18px;
+}
+body{
+    padding: 20px;
+}
+#input{
+    font-family: Tahoma, Verdana, sans-serif;
+    width: 49%;
+    height: 300px;
+}
+#route{
+    font-family: Tahoma, Verdana, sans-serif;
+    width: 49%;
+    height: 300px;
+}
+.button{
+    background-color: #6e9aa0cb; 
+    width: 49%; 
+    color: black;
+    border: none;
+    padding: 15px 32px;
+    font-size: 18px;
+    border: 5px solid white
+}
+#polygon{
+    font-family: Tahoma, Verdana, sans-serif;
+    width: 98%;
+    height: 150px;
+}
+
+#errorMessage{
+    text-align: center
+}
+#uploadfield{
+    padding: 10px
+}
+#uploadInfo{
+    padding-left: 10px;
+    padding-top: 10px
+}
