@@ -1,7 +1,13 @@
+html{
+    position: relative;
+    min-height: 100%;
+    background-color: rgb(248, 249, 250);
+}
 h1, p, table, div{
     font-family: Tahoma, Verdana, sans-serif;
 }
-table {
+#table {
+    padding: 10px;
     font-family: Tahoma, Verdana, sans-serif;
     border-collapse: collapse;
     width: 100%;
@@ -10,6 +16,10 @@ table, th, td {
     padding: 10px;
     border: 0.1px solid black;
     border-collapse: collapse;
+}
+#bg-head{
+    padding-top: 20px; 
+    background-color: rgb(34,37,41); 
 }
 th, td {
     text-align: left;
@@ -21,7 +31,7 @@ th, td {
 }
 .th, .td{
     height: 500px;
-    text-align: left
+    text-align: left;
 }
 tr{
     height: 50px
@@ -29,14 +39,14 @@ tr{
 tr:nth-child(even) {
     background-color: #dcecec;
 }
-#finalSum, #routeHeading{
-    padding-top: 20px;
+#finalSumValue, #routeHeading{
+    padding-left: 10px;
     padding-bottom: 20px;
     height: 200 px;
     font-size: 18px;
 }
-body{
-    padding: 20px;
+#innerBody{
+    padding: 10px;
 }
 #input{
     font-family: Tahoma, Verdana, sans-serif;

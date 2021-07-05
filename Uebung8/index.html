@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <head>
-    <link rel="stylesheet" href="index.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.css">
+    <script src="bootstrap/dist/js/bootstrap.js"></script>
     <script src="polygon.js"></script>
-    <script src="route.js"></script> 
+    <script src="route.js"></script>
+    <!--Vue.js--> 
     <script src="vue.min.js"></script> 
     <script async src="uebung2.js"></script>
     <script async src="uebung8.js"></script>
+    <link rel="stylesheet" href="index.css"/>
 </head>
 <body>
-    <h1 id="title">{{ message }}</h1>
-    <p id="subtitle">{{ message }}</p>
+    <!--Header-->
+    <div id="bg-head">
+        <h1 id="title" class="d-block p-2 bg-dark text-white">{{ message }}</h1>
+        <p id="subtitle" class="d-block p-2 bg-dark text-white">{{ message }}</p> 
+    </div>
+    <!--<h1 id="title">{{ message }}</h1>
+    <p id="subtitle">{{ message }}</p>-->
     <!--<table id="table"><table>
     <div id="finalSum"></div>-->
     <div id="table">
@@ -27,21 +37,28 @@
                 <td>{{distance.endpoint[0]}}, {{distance.endpoint[1]}}</td>
             </tr>
         </table>
-    </div><br><br>
-    <div id="finalSumValue">{{ message }}</div><br><br>
-</div>
-
-
-    <textarea type="text" id="route"></textarea>
-    <textarea type="text" id="input" placeholder="Enter LineString..."></textarea>
-    <div id="errorMessage"></div><br>
-    <button type="button" class="button" onclick="useStandard()">Use standard-route</button>
-    <button type="button" class="button" onclick="getInputValue()">Use input-route</button>
-    <div id="uploadInfo">Upload a .json or .geojson file including a LineString to use it directly as route</div>
-    <input type="file" id="uploadfield"><br>
-    <div id="errorMessage2"></div><br>
-    <button type="button" class="button" onclick="getFile()">Use uploaded file</button>
-    <div id="routeHeading">Used polygon:</div>
-    <textarea type="text" id="polygon"></textarea>
+    </div>
+    <div id="finalSumValue">{{ message }}</div>
+    <div id="innerBody">
+        <textarea type="text" id="route"></textarea>
+        <textarea type="text" id="input" placeholder="Enter LineString..."></textarea>
+        <div id="errorMessage"></div><br>
+        <button type="button" class="button" onclick="useStandard()">Use standard-route</button>
+        <button type="button" class="button" onclick="getInputValue()">Use input-route</button>
+        <div id="uploadInfo">Upload a .json or .geojson file including a LineString to use it directly as route</div>
+        <input type="file" id="uploadfield"><br>
+        <div id="errorMessage2"></div><br>
+        <button type="button" class="button" onclick="getFile()">Use uploaded file</button>
+        <div id="routeHeading">Used polygon:</div>
+        <textarea type="text" id="polygon"></textarea>
+    </div>
+    
+    <!-- Footer -->
+    <footer id="footer" class="bg-dark text-center text-lg-start text-white sticky-bottom">
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+          © 2020 Copyright: J. Balzer & A. Pilz
+        </div>
+    </footer>
 </body>
 </html>
