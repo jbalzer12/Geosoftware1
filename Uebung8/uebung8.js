@@ -70,14 +70,14 @@ var routeShow = new Vue({
 })
 
 // WARUM AUCH IMMER FUNKTIONERT DAS HIER NICHT
-/*
+
 var uploadContainer = new Vue({
     el: '#uploadContainer',
     data: {
         message: 'test'
     }
 })
-*/
+
 /*
 
 //var reader
