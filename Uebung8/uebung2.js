@@ -144,7 +144,6 @@ function intersect(segment1, segment2)
     var gamma12 = 2 * Math.asin(Math.sqrt(Math.sin(dphi/2) * Math.sin(dphi/2)
         + Math.cos(phi1) * Math.cos(phi2) * Math.sin(dlambda/2) * Math.sin(dlambda/2)))
     if (Math.abs(gamma12) < Number.EPSILON) {
-        //console.log("Coincident points")
         return  [phi1, phi2]
     }
 
@@ -169,12 +168,10 @@ function intersect(segment1, segment2)
 
     // If this case gets entered, it exists infinite solutions
     if(Math.sin(alpha1) == 0 && Math.sin(alpha2) == 0) {
-        //console.log("infinite solutions") 
         return null
     }
     // If this case gets entered, it exists ambitious solutions
     if(Math.sin(alpha1) * Math.sin(alpha2) < 0) {
-        //console.log("ambitious solutions") 
         return null
     }
 
@@ -427,10 +424,11 @@ function useStandard(){
     main(linestring)
 }
 
-let uploadfield = document.getElementById("uploadfield")
+/*
+let uploadField = document.getElementById("uploadfield")
 var reader
 // When the user chooses the option to upload a .json file it gets read by the following code-lines
-uploadfield.addEventListener('change', function(){
+uploadField.addEventListener('change', function(){
     if(uploadfield.isDefaultNamespace.length > 0){
         reader = new FileReader()
         reader.readAsText(uploadfield.files[0])
@@ -459,9 +457,9 @@ function getFile(){
 
 // Transforms given arrays to JSONs by building up new objects
 polygon = new JSONConstructor(polygon, "Polygon")
-document.getElementById("polygon").innerHTML = JSON.stringify(polygon)
+//document.getElementById("polygon").innerHTML = JSON.stringify(polygon)
 route = new JSONConstructor(route, "LineString")
-document.getElementById("route").innerHTML = JSON.stringify(route)
+//document.getElementById("route").innerHTML = JSON.stringify(route)
 linestring = route
 
 var finalSum
@@ -484,37 +482,6 @@ function main(routeForCalc){
         return 0;
     }) 
 
-    // Clears the table before filling it (needed in case it is already filled up)
-    /*
-    clearTable()
-
-    // some constants to build up a table for the HTML-webpage
-    const table = document.getElementById("table")
-    const hrow = document.createElement("tr")
-    table.appendChild(hrow)
-
-    var listCaptions = [" Distance (in km) ", " Start coordinate ", "End coordinate "]
-    // Now the first line with the headings gets build up 
-    for(let caption of listCaptions){
-        const th = document.createElement("th")
-        const thtext = document.createTextNode(caption)
-        th.appendChild(thtext)
-        hrow.appendChild(th)
-    }
-
-    // Now the table gets filled up with all the values from the relevant-data-array
-    for(let distance of distances){
-        const drow = document.createElement("tr")
-        table.appendChild(drow)
-        
-        for(let elements of distance){
-            const td = document.createElement("td")
-            const thtext = document.createTextNode(elements)
-            td.appendChild(thtext)
-            drow.appendChild(td)
-        } 
-    }
-    */
     // And also the final lenght of the route gets calucalated.
     // But here the know coordinates (also the intersection-coordinates) get used
     // So the value might be a little bit different from the original length of the route
@@ -523,9 +490,6 @@ function main(routeForCalc){
 
         finalSum += distance.dist
     }
-    console.log(finalSum)
-    //document.getElementById("finalSum").innerHTML = "<b>Total length of the route: </b>"+finalSum+" km"
-    
 }
 // Main-method gets called
 main(linestring)

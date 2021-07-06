@@ -47,43 +47,50 @@ tr:nth-child(even) {
 #innerBody{
     padding: 10px;
 }
-#inputField{
+
+#input{
     font-family: Tahoma, Verdana, sans-serif;
     width: 49%;
+    float: left;
+}
+#inputField{
+    width: 100%;
     height: 300px;
 }
+#errorMessage{
+    height: 50px;
+}
+
+
 #routeField{
     font-family: Tahoma, Verdana, sans-serif;
     width: 49%;
+    float: right;
+}
+#routeShow{
+    width: 100%;
     height: 300px;
 }
-.button{
-    background-color: #6e9aa0cb; 
-    width: 49%; 
-    color: black;
-    border: none;
-    padding: 15px 32px;
-    font-size: 18px;
-    border: 5px solid white
-}
-#polygon{
+
+
+#polygonField{
     font-family: Tahoma, Verdana, sans-serif;
     width: 98%;
     height: 150px;
 }
 
 #errorMessage{
-    text-align: center
+    text-align: center;
+    color: red;
+    font-size: 20px;
 }
-#uploadfield{
-    padding: 10px
+#uploadField{
+    padding-left: 10px
 }
-#uploadInfo{
-    padding-left: 10px;
-    padding-top: 10px
-}
-#polygonField{
-    font-family: Tahoma, Verdana, sans-serif;
-    width: 49%;
-    height: 300px;
+
+#uploadContainer{
+    width: 100%;
+    float: left;
+    padding-bottom: 50px;
+
 }

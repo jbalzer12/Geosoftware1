@@ -18,10 +18,7 @@
         <h1 id="title" class="d-block p-2 bg-dark text-white">{{ message }}</h1>
         <p id="subtitle" class="d-block p-2 bg-dark text-white">{{ message }}</p> 
     </div>
-    <!--<h1 id="title">{{ message }}</h1>
-    <p id="subtitle">{{ message }}</p>-->
-    <!--<table id="table"><table>
-    <div id="finalSum"></div>-->
+    <!--Table-->
     <div id="table">
         <table class="table table-bordered">
             <thead>
@@ -38,30 +35,28 @@
             </tr>
         </table>
     </div>
+    <!--FinalSum-->
     <div id="finalSumValue">{{ message }}</div>
     <div id="innerBody">
+        <!--InputField-->
         <div id="input">
-            <textarea id="inputField" v-model="message" placeholder="Enter Linestring..."></textarea>
-            <button v-on:click="getInputValue">Use input-route</button>
-            <br>{{ errorMes }}
+            <textarea id="inputField" v-model="message" placeholder="Enter Linestring..."></textarea><br>
+            <button class="btn btn-secondary btn-lg btn-block" v-on:click="getInputValue">Use input-route</button>
+            <br><br><div id="errorMessage">{{errorMes}}</div>
         </div>
-
+        <!--RouteField-->
         <div id="routeField">
-            <textarea id="routeShow" v-model="message"></textarea>
-            <button type="button" class="button" onclick="useStandard()">Use standard-route</button>
+            <textarea id="routeShow" v-model="message"></textarea><br>
+            <button class="btn btn-secondary btn-lg btn-block" v-on:click="useStandard">Use standard-route</button>
         </div>
-
-       
-        <!--<textarea type="text" id="input" placeholder="Enter LineString..."></textarea>
-        <button type="button" class="button" onclick="getInputValue()">Use input-route</button>
-        -->
-
-
-        <div id="uploadInfo">Upload a .json or .geojson file including a LineString to use it directly as route</div>
-        <input type="file" id="uploadfield"><br>
-        <div id="errorMessage2"></div><br>
-        <button type="button" class="button" onclick="getFile()">Use uploaded file</button>
-
+        <!--Upload field-->
+        <div id="uploadContainer">{{message}}
+            <p id="uploadInfo">Upload a .json or .geojson file including a LineString to use it directly as route.</p><br>
+            <input type="file" id="uploadField" v-on="change: onChange"><br>
+            <p id="errorMessage2"></p><br>
+            <button type="button" class="btn btn-secondary btn-lg btn-block" v-on:click="getFile">Use uploaded file</button><br>
+        </div>
+        
 
         <div id="polygonArea">
             <textarea id="polygonField" v-model="message"></textarea>
