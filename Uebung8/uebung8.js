@@ -59,9 +59,21 @@ var inputValue = new Vue({
     }
 })
 
+<<<<<<< Updated upstream
+=======
+
+/*var polygonField = new Vue({
+    el: "#polygon",
+    data: { 
+        message: ''
+    }
+})*/
+
+
+>>>>>>> Stashed changes
 var routeField = new Vue({
-    el: '#route',
-    data: { message: '' },
+    el: '#routeField',
+    data: { message: 'Hallo' },
     methods: {
         
     }
