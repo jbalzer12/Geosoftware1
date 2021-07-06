@@ -43,17 +43,16 @@ tr:nth-child(even) {
     padding-left: 10px;
     padding-bottom: 20px;
     height: 200 px;
-    font-size: 18px;
 }
 #innerBody{
     padding: 10px;
 }
-#input{
+#inputField{
     font-family: Tahoma, Verdana, sans-serif;
     width: 49%;
     height: 300px;
 }
-#route{
+#routeField{
     font-family: Tahoma, Verdana, sans-serif;
     width: 49%;
     height: 300px;

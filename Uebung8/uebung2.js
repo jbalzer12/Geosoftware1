@@ -529,3 +529,4 @@ function main(routeForCalc){
 }
 // Main-method gets called
 main(linestring)
+

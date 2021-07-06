@@ -8,8 +8,8 @@
     <script src="route.js"></script>
     <!--Vue.js--> 
     <script src="vue.min.js"></script> 
-    <script async src="uebung2.js"></script>
-    <script async src="uebung8.js"></script>
+    <script defer src="uebung2.js"></script>
+    <script defer src="uebung8.js"></script>
     <link rel="stylesheet" href="index.css"/>
 </head>
 <body>
@@ -40,19 +40,33 @@
     </div>
     <div id="finalSumValue">{{ message }}</div>
     <div id="innerBody">
-        <textarea type="text" id="route"></textarea>
-        <textarea type="text" id="input" placeholder="Enter LineString..."></textarea>
-        <div id="errorMessage"></div><br>
-        <button type="button" class="button" onclick="useStandard()">Use standard-route</button>
+        <div id="input">
+            <textarea id="inputField" v-model="message" placeholder="Enter Linestring..."></textarea>
+            <button v-on:click="getInputValue">Use input-route</button>
+            <br>{{ errorMes }}
+        </div>
+
+        <div id="route">
+            <textarea id="routeField" v-model="message"></textarea>
+            <!--<button type="button" class="button" onclick="useStandard()">Use standard-route</button>-->
+        </div>
+
+       
+        <!--<textarea type="text" id="input" placeholder="Enter LineString..."></textarea>
         <button type="button" class="button" onclick="getInputValue()">Use input-route</button>
+        -->
+
+
         <div id="uploadInfo">Upload a .json or .geojson file including a LineString to use it directly as route</div>
         <input type="file" id="uploadfield"><br>
         <div id="errorMessage2"></div><br>
         <button type="button" class="button" onclick="getFile()">Use uploaded file</button>
-        <div id="routeHeading">Used polygon:</div>
-        <textarea type="text" id="polygon"></textarea>
+
+
+        <div id="polygon">
+            <textarea id="polygonField" v-model="message"></textarea>
+        </div>
     </div>
-    
     <!-- Footer -->
     <footer id="footer" class="bg-dark text-center text-lg-start text-white sticky-bottom">
         <!-- Copyright -->

@@ -26,3 +26,44 @@ var finalSumValue = new Vue({
         message: 'Overall distance: ' + Math.round(finalSum * 100) / 100
     }
 })
+
+var linestring = "";
+
+var inputValue = new Vue({
+    el: "#input",
+    data: { 
+        message: '',
+        errorMes: ''    
+    },
+    methods: {
+        getInputValue: function(){
+            this.errorMes = ''
+            if(isValid(this.message) == true){
+                if((JSON.parse(this.message)).type != "LineString"){
+                    this.errorMes = 'ERROR: This is not a LineString. Expected pattern: {"type":"LineString","coordinates":[...]}'                    
+                } else{
+                    linestring = JSON.parse(this.message)
+                    main(linestring)
+                }
+            } else { // Throws an error if not
+                this.errorMes = "ERROR: This is not a valid GeoJSON"
+            }        
+        }
+    }
+})
+
+
+var polygonField = new Vue({
+    el: "#polygon",
+    data: { 
+        message: ''
+    }
+})
+
+var routeField = new Vue({
+    el: '#route',
+    data: { message: '' },
+    methods: {
+        
+    }
+})
