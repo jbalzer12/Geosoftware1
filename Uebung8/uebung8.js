@@ -27,6 +27,13 @@ var finalSumValue = new Vue({
     }
 })
 
+var polygonArea = new Vue({
+    el: "#polygonArea",
+    data: { 
+        message: JSON.stringify(polygon)
+    }
+})
+
 var linestring = "";
 
 var inputValue = new Vue({
@@ -49,14 +56,6 @@ var inputValue = new Vue({
                 this.errorMes = "ERROR: This is not a valid GeoJSON"
             }        
         }
-    }
-})
-
-
-var polygonField = new Vue({
-    el: "#polygon",
-    data: { 
-        message: ''
     }
 })
 
