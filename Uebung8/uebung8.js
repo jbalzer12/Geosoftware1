@@ -69,14 +69,80 @@ var routeShow = new Vue({
     }
 })
 
-// WARUM AUCH IMMER FUNKTIONERT DAS HIER NICHT
-
-var uploadContainer = new Vue({
-    el: '#uploadContainer',
-    data: {
-        message: 'test'
-    }
+Vue.component('button-counter', {
+    data: function () {
+      return {
+        count: 0
+      }
+    },
+    template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
 })
+
+new Vue({ el: '#components-demo' })
+
+Vue.component('custom-input', {
+    props: ['value'],
+    template: `
+      <input
+        v-bind:value="value"
+        v-on:input="$emit('input', $event.target.value)"
+      >
+    `
+})
+
+new Vue({ el: '#searchTextTest' })
+var file
+
+new Vue({ 
+    el: '#fileTest',
+    methods: {
+        previewFiles(event) {
+           console.log(event.target.files);
+           file = event
+        }
+     }
+})
+
+//doesnt work ....
+
+var reader
+
+var test = new Vue({ 
+    el: '#uploadContainer',
+    data: { errorMessage: '' },
+    methods: {
+        readFile(event) {
+            console.log(event.target.files);
+            var upload = document.getElementById("uploadField")
+            if(upload.isDefaultNamespace.length > 0){
+                reader = new FileReader()
+                reader.readAsText(upload.files[0])
+            }
+            if(isValid(reader.result) == true){ // Checks whether the input is valid
+                var parsed = JSON.parse(reader.result)
+                setTimeout(console.log('We wait'), 10000)
+                if(parsed.type != "LineString"){
+                    this.errorMessage = 'ERROR: This is not a LineString. Expected pattern: {"type":"LineString","coordinates":[...]}'
+                } else{
+                    linestring = JSON.parse(reader.result)
+                    main(linestring)
+                }
+            } else { // Throws an error if not
+                this.errorMessage = "ERROR: This is not a valid GeoJSON"
+            }
+        }
+     }
+})
+
+
+/*Vue.component('fileUpload', {
+    template: `
+        <input 
+            type="file" 
+            v-on:input="$emit('input', $)
+    `
+
+})*/
 
 /*
 

@@ -51,10 +51,10 @@
         </div>
         <!--Upload field-->
         <div id=uploadContainer>
-            {{ message }}
+            
             <p id="uploadInfo">Upload a .json or .geojson file including a LineString to use it directly as route.</p><br>
-            <input type="file" id="uploadField"><br>
-
+            <input type="file" id="uploadField" @change="readFile"><br>
+            {{ errorMessage }}
         </div>
 
         <!--<div id="uploadContainer2">
@@ -63,7 +63,10 @@
             <p id="errorMessage22"></p><br>
             <button type="button" class="btn btn-secondary btn-lg btn-block" v-on:click="getFile">Use uploaded file</button><br>
         </div>-->
-        
+
+
+        <input id="fileTest" type="file" @change="previewFiles">
+
 
         <div id="polygonArea">
             <textarea id="polygonField" v-model="message"></textarea>
