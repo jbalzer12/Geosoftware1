@@ -1,3 +1,4 @@
+//Title vue
 var title = new Vue({
     el: '#title',
     data: {
@@ -5,6 +6,7 @@ var title = new Vue({
     }
 })
 
+//Subtitle vue
 var subtitle = new Vue({
     el: '#subtitle',
     data: {
@@ -12,6 +14,7 @@ var subtitle = new Vue({
     }
 })
 
+//Table vue
 var table = new Vue({
     el:'#table',
     data:{
@@ -19,6 +22,7 @@ var table = new Vue({
     },
 })
 
+//final Sum vue
 var finalSumValue = new Vue({
     el:'#finalSumValue',
     data:{
@@ -26,6 +30,7 @@ var finalSumValue = new Vue({
     }
 })
 
+//Polygon as String vue
 var polygonArea = new Vue({
     el: "#polygonArea",
     data: { 
@@ -33,8 +38,9 @@ var polygonArea = new Vue({
     }
 })
 
-var linestring = "";
+var linestring = ""; //initialize lineString
 
+//Input for Route vue
 var inputValue = new Vue({
     el: "#input",
     data: { 
@@ -46,143 +52,28 @@ var inputValue = new Vue({
             this.errorMes = ''
             if(isValid(this.message) == true){
                 if((JSON.parse(this.message)).type != "LineString"){
-                    
+                    //errormessage is shown if the input does not conform to the lineString pattern
                     this.errorMes = 'ERROR: This is not a LineString. Expected pattern: {"type":"LineString","coordinates":[...]}'                    
                 } else{
+                    //if the Route is valid it is parsed and interpreted
                     linestring = JSON.parse(this.message)
                     main(linestring)
                 }
-            } else { // Throws an error if not
+            } else { 
+                //if the Route is not 
                 this.errorMes = "ERROR: This is not a valid GeoJSON"
             }        
         }
     }
 })
 
+//Route container vue
 var routeShow = new Vue({
     el: '#routeShow',
-    data: { message: JSON.stringify(route) },
+    data: { message: JSON.stringify(route) }, //stringified route as content
     methods: {
         useStandard: function(){
             linestring = route
         }
     }
 })
-
-Vue.component('button-counter', {
-    data: function () {
-      return {
-        count: 0
-      }
-    },
-    template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
-})
-
-new Vue({ el: '#components-demo' })
-
-Vue.component('custom-input', {
-    props: ['value'],
-    template: `
-      <input
-        v-bind:value="value"
-        v-on:input="$emit('input', $event.target.value)"
-      >
-    `
-})
-
-new Vue({ el: '#searchTextTest' })
-var file
-
-new Vue({ 
-    el: '#fileTest',
-    methods: {
-        previewFiles(event) {
-           console.log(event.target.files);
-           file = event
-        }
-     }
-})
-
-//doesnt work ....
-
-var reader
-
-var test = new Vue({ 
-    el: '#uploadContainer',
-    data: { errorMessage: '' },
-    methods: {
-        readFile(event) {
-            console.log(event.target.files);
-            var upload = document.getElementById("uploadField")
-            if(upload.isDefaultNamespace.length > 0){
-                reader = new FileReader()
-                reader.readAsText(upload.files[0])
-            }
-            if(isValid(reader.result) == true){ // Checks whether the input is valid
-                var parsed = JSON.parse(reader.result)
-                setTimeout(console.log('We wait'), 10000)
-                if(parsed.type != "LineString"){
-                    this.errorMessage = 'ERROR: This is not a LineString. Expected pattern: {"type":"LineString","coordinates":[...]}'
-                } else{
-                    linestring = JSON.parse(reader.result)
-                    main(linestring)
-                }
-            } else { // Throws an error if not
-                this.errorMessage = "ERROR: This is not a valid GeoJSON"
-            }
-        }
-     }
-})
-
-
-/*Vue.component('fileUpload', {
-    template: `
-        <input 
-            type="file" 
-            v-on:input="$emit('input', $)
-    `
-
-})*/
-
-/*
-
-//var reader
-var uploadContainer = new Vue({
-    el: '#uploadContainer',
-    data: { message: 'Test' }/*,
-    methods: {
-        onChange: function(){
-            return 0
-        },
-
-        getFile: function(){
-            return 0
-        }
-    }
-})
-*/ 
-/*
-let uploadField = document.getElementById("uploadfield")
-var reader
-// When the user chooses the option to upload a .json file it gets read by the following code-lines
-uploadField.addEventListener('change', function(){
-    if(uploadfield.isDefaultNamespace.length > 0){
-        reader = new FileReader()
-        reader.readAsText(uploadfield.files[0])
-    }
-})
-
-function getFile(){
-    document.getElementById("errorMessage2").innerHTML = ""
-    if(isValid(reader.result) == true){ // Checks whether the input is valid
-        if((JSON.parse(reader.result)).type != "LineString"){
-            document.getElementById("errorMessage2").innerHTML = 'ERROR: This is not a LineString. Expected pattern: {"type":"LineString","coordinates":[...]}'
-        } else{
-            linestring = JSON.parse(reader.result)
-            main(linestring)
-        }
-    } else { // Throws an error if not
-        document.getElementById("errorMessage2").innerHTML = "ERROR: This is not a valid GeoJSON"
-    }
-}
-*/
