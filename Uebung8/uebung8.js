@@ -48,6 +48,7 @@ var inputValue = new Vue({
         errorMes: ''   
     },
     methods: {
+        //This function reads the user input in the input field and makes the calculations with it
         getInputValue: function(){
             this.errorMes = ''
             if(isValid(this.message) == true){
@@ -72,6 +73,7 @@ var routeShow = new Vue({
     el: '#routeShow',
     data: { message: JSON.stringify(route) }, //stringified route as content
     methods: {
+        // Sets the standard route as used route
         useStandard: function(){
             linestring = route
         }
